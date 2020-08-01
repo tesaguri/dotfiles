@@ -360,10 +360,13 @@ background_opacity: 0.7
 #   - (macOS) /bin/bash --login
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
-#shell:
+shell:
 #  program: /bin/bash
 #  args:
 #    - --login
+  program: /usr/local/bin/tmux
+  args:
+    - -l
 
 # Startup directory
 #
