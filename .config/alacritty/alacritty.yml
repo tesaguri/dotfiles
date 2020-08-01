@@ -681,6 +681,8 @@ key_bindings:
   #- { key: F,      mods: Command,            action: SearchForward    }
   #- { key: B,      mods: Command,            action: SearchBackward   }
 
+  - { key: F, mods: Command|Control, action: ToggleSimpleFullscreen }
+
   # Config for the JIS keyboard.
   - { key: Semicolon, mods: Shift|Command, action: IncreaseFontSize }
   - { key: Yen, chars: \ }
