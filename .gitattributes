@@ -1,1 +1,3 @@
+rcrc linguist-language=Shell
+
 /config/zsh/functions/_cargo linguist-vendored
