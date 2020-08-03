@@ -1,4 +1,5 @@
-HISTFILE="$ZDOTDIR/.zsh_history"
+HISTFILE="${XDG_DATA_HOME:-${HOME}/.local/share/zsh}/history"
+mkdir -p $(dirname $HISTFILE)
 HISTSIZE=100000
 SAVEHIST=10000000
 setopt extended_history
