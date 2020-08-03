@@ -1,1 +1,1 @@
-PATH="$HOME/.local/bin:$PATH"
+PATH="${XDG_BIN_HOME:-$HOME/.local/bin}:$PATH"

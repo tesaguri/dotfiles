@@ -9,8 +9,9 @@ fpath=("$ZDOTDIR/functions" $fpath)
 fpath+=~/.zfunc
 
 autoload -Uz compinit
-mkdir -p "$HOME/.cache/zsh"
-compinit -d "$HOME/.cache/zsh/zcompdump"
+local zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+mkdir -p $(dirname $zcompdump)
+compinit -d $zcompdump
 
 PROMPT='%0(?.%F{green}✔.%F{red}✘[%?])%f%n@%m%# '
 RPROMPT=%~
