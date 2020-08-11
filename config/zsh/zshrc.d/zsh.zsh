@@ -14,5 +14,5 @@ local zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 mkdir -p $(dirname $zcompdump)
 compinit -d $zcompdump
 
-PROMPT='%0(?.%F{green}✔.%F{red}✘[%?])%f%n@%m%# '
+PROMPT='%0(?.%F{green}✔.%130(?.%F{yellow}⚠[%?].%F{red}✘[%?]))%f%n@%m%# '
 RPROMPT=%~
