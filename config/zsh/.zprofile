@@ -1,11 +1,16 @@
-() {
+main() {
+	unset -f main
+
 	local f=
 
-	for f in "$ZDOTDIR"/{.zprofile,zprofile.d/*.zsh}; do
-		([ ! -e $f.zwc ] || [[ $f -nt $f.zwc ]]) && zcompile $f
+	for f in "$ZDOTDIR"/{.zprofile,zprofile.d/*.sh}; do
+		{ [ ! -e "$f.zwc" ] || [[ "$f" -nt "$f.zwc" ]]; } && zcompile "$f"
 	done
 
-	for f in "$ZDOTDIR"/zprofile.d/*.zsh; do
-		source $f;
+	for f in "$ZDOTDIR"/zprofile.d/*.sh; do
+		# shellcheck disable=SC1090
+		. "$f"
 	done
 }
+
+main "$@"
