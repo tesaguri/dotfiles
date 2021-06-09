@@ -1,0 +1,24 @@
+[user]
+	name = Daiki Mizukami
+	email = tesaguriguma@gmail.com
+	signingkey = 293ADA14A1CB0B1C2313310110478E598B944AA2
+
+[github]
+	user = tesaguri
+
+[core]
+	pager = "if type delta > /dev/null 2>&1; then delta --color-only; else ${PAGER:-less}; fi"
+
+[interactive]
+	diffFilter = "if type delta > /dev/null 2>&1; then delta --color-only; else cat; fi"
+
+[merge]
+	conflictStyle = diff3
+
+[pull]
+	ff = only
+
+[alias]
+	# Reference: <https://gist.github.com/bkeepers/4986257>
+	fixup = "!f() { REV=\"$(git rev-parse \"$1\")\" && git commit -m \"fixup! $REV\" \"${@:2}\" && GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash \"$REV^\"; }; f"
+	pushf = push --force-with-lease
