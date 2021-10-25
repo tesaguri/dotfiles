@@ -13,7 +13,9 @@ main() {
 
 	bindkey -e
 
-	fpath=("$ZDOTDIR/functions" "${fpath[@]}")
+	if type rustup > /dev/null 2>&1; then
+		fpath+=("$(rustup show home)/toolchains/$(rustup default | cut -d' ' -f1)/share/zsh/site-functions")
+	fi
 	fpath+=(~/.zfunc)
 	export fpath
 
