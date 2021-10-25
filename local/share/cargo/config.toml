@@ -1,2 +1,6 @@
 [profile.dev]
 split-debuginfo = "unpacked"
+
+[target]
+[x86_64-unknown-linux-musl]
+linker = "x86_64-linux-musl-ld"
