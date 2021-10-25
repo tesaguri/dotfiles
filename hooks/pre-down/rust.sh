@@ -1,3 +1,3 @@
-if [ -L "$CARGO_INSTALL_ROOT/rustup" ]; then
-	rm "$CARGO_INSTALL_ROOT/rustup"
+if [ -L "$CARGO_INSTALL_ROOT/bin/rustup" ]; then
+	rm "$CARGO_INSTALL_ROOT/bin/rustup"
 fi
