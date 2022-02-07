@@ -2,10 +2,6 @@
 " - <https://github.com/Shougo/dein.vim/blob/def7391/README.md#quick-start>
 " - <https://qiita.com/kawaz/items/ee725f6214f91337b42b>
 
-if &compatible
-	set nocompatible
-endif
-
 " Install dein.
 let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.cache') : $XDG_CACHE_HOME
 let s:dein_dir = s:cache_home . '/dein'
@@ -28,6 +24,3 @@ endif
 if has('vim_starting') && dein#check_install()
 	call dein#install()
 endif
-
-filetype plugin indent on
-syntax enable
