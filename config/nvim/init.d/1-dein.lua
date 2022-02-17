@@ -10,7 +10,7 @@ end
 local dein_dir = cache_home..'/dein'
 local dein_repo_dir = dein_dir..'/repos/github.com/Shougo/dein.vim'
 if not vim.fn.isdirectory(dein_repo_dir) then
-  os.execute('git', 'clone', 'https://github.com/Shougo/dein.vim.git', vim.fn.shellescape(vim.fn.escape(dein_repo_dir)))
+  os.execute('git clone https://github.com/Shougo/dein.vim.git '..vim.fn.shellescape(vim.fn.escape(dein_repo_dir)))
 end
 vim.opt.runtimepath:prepend(dein_repo_dir)
 
@@ -24,6 +24,6 @@ if not(vim.fn['dein#load_state'](dein_dir) == 0) then
   vim.fn['dein#save_state']()
 end
 
-if vim.fn.has('vim_starting') == 0 and not (vim.fn['dein#check_install']() == 0) then
+if not (vim.fn.has('vim_starting') == 0) and not (vim.fn['dein#check_install']() == 0) then
   vim.fn['dein#install']()
 end
