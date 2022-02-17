@@ -26,40 +26,47 @@ local on_attach = function(client, bufnr)
 end
 
 vim.fn['dein#source']('nvim-lspconfig')
-require('lspconfig').rust_analyzer.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    ["rust-analyzer"] = {
-      assist = {
-        allowMergingIntoGlobImports = false,
-        importGranularity = "module",
+local lspconfig = require('lspconfig')
+
+local settings = {
+  ['dhall-lsp-server'] = {},
+  ['rust-analyzer'] = {
+    assist = {
+      allowMergingIntoGlobImports = false,
+      importGranularity = "module",
+    },
+    cargo = {
+      allFeatures = true,
+    },
+    checkOnSave = {
+      command = "clippy",
+      extraArgs = {
+        "--",
+        "--warn",
+        "rust_2018_idioms",
+        "--warn",
+        "clippy::pedantic",
+        -- Too noisy because it warns the whole function.
+        "--allow",
+        "clippy::too_many_lines",
       },
-      cargo = {
-        allFeatures = true,
+    },
+    diagnostics = {
+      warningsAsHelp = {
+        "clippy::pedantic",
       },
-      checkOnSave = {
-        command = "clippy",
-        extraArgs = {
-          "--",
-          "--warn",
-          "rust_2018_idioms",
-          "--warn",
-          "clippy::pedantic",
-          -- Too noisy because it warns the whole function.
-          "--allow",
-          "clippy::too_many_lines",
-        },
-      },
-      diagnostics = {
-        warningsAsHelp = {
-          "clippy::pedantic",
-        },
-        warningsAsInfo = {
-          -- I am not a big fan of this lint.
-          "clippy::type_complexity",
-        },
+      warningsAsInfo = {
+        -- I am not a big fan of this lint.
+        "clippy::type_complexity",
       },
     },
   },
 }
+
+for server, settings in pairs(settings) do
+  lspconfig[string.gsub(server, '-', '_')].setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    settings = settings,
+  }
+end
