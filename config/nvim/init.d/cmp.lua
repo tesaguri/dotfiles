@@ -1,6 +1,5 @@
 -- Reference: <https://github.com/hrsh7th/nvim-cmp/blob/main/README.md#recommended-configuration>
 
-vim.fn['dein#source']('nvim-cmp')
 local cmp = require('cmp')
 
 vim.opt.completeopt = {
