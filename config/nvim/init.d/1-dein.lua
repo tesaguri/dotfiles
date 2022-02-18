@@ -6,12 +6,7 @@ if not(cache_home) or cache_home == '' then
 end
 local base_path = cache_home..'/dein'
 
--- Install dein.
-local dein_repo = base_path..'/repos/github.com/Shougo/dein.vim'
-if not vim.fn.isdirectory(dein_repo) then
-  os.execute('git clone https://github.com/Shougo/dein.vim.git '..vim.fn.shellescape(vim.fn.escape(dein_repo)))
-end
-vim.opt.runtimepath:append(dein_repo)
+vim.opt.runtimepath:append(base_path..'/repos/github.com/Shougo/dein.vim')
 
 -- Load plugins.
 if not(vim.fn['dein#load_state'](base_path) == 0) then
