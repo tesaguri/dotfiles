@@ -23,11 +23,13 @@ if not(vim.fn['dein#load_state'](base_path) == 0) then
   -- after editing this.
 
   add('chrisbra/Recover.vim')
+  add('editorconfig/editorconfig-vim')
   add('hrsh7th/cmp-buffer')
   add('hrsh7th/cmp-nvim-lsp', { lazy = true, on_source = 'nvim-lspconfig' })
   add('hrsh7th/cmp-vsnip')
   add('hrsh7th/nvim-cmp')
   add('hrsh7th/vim-vsnip')
+  add('milisims/nvim-luaref')
   add('neovim/nvim-lspconfig', { lazy = true, on_ft = { 'dhall', 'rust' } })
   add('rust-lang/rust.vim', { lazy = true, on_ft = 'rust' })
   add('Shougo/dein.vim')
