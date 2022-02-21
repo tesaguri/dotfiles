@@ -1,6 +1,4 @@
-main() {
-	unset -f main
-
+function() {
 	if [ "$RCM_HOOK" = 1 ]; then
 		return
 	fi
@@ -16,5 +14,3 @@ main() {
 	export PROMPT='%0(?.%F{green}✔.%130(?.%F{yellow}⚠[%?].%F{red}✘[%?]))%f%n@%m%# '
 	export RPROMPT=%~
 }
-
-main "$@"
