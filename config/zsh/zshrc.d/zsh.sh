@@ -13,17 +13,6 @@ main() {
 
 	bindkey -e
 
-	if type rustup > /dev/null 2>&1; then
-		fpath+=("$(rustup show home)/toolchains/$(rustup default | cut -d' ' -f1)/share/zsh/site-functions")
-	fi
-	fpath+=(~/.zfunc)
-	export fpath
-
-	autoload -Uz compinit
-	local zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
-	mkdir -p "$(dirname "$zcompdump")"
-	compinit -d "$zcompdump"
-
 	export PROMPT='%0(?.%F{green}✔.%130(?.%F{yellow}⚠[%?].%F{red}✘[%?]))%f%n@%m%# '
 	export RPROMPT=%~
 }
