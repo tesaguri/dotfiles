@@ -1,9 +1,11 @@
 vim.fn['dein#set_hook']('rust-tools.nvim', 'hook_source', function()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+  local on_attach = require('init.lsp').on_attach
 
   require('rust-tools').setup {
     capabilities = capabilities,
+    on_attach = on_attach,
     server = {
       settings = {
         assist = {
