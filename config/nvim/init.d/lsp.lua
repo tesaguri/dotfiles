@@ -29,40 +29,7 @@ vim.fn['dein#set_hook']('nvim-lspconfig', 'hook_source', function()
 
   local settings = {
     ['dhall-lsp-server'] = {},
-    ['rust-analyzer'] = {
-      assist = {
-        allowMergingIntoGlobImports = false,
-        importGranularity = "module",
-      },
-      cargo = {
-        allFeatures = true,
-      },
-      checkOnSave = {
-        command = "clippy",
-        extraArgs = {
-          "--",
-          "--warn",
-          "rust_2018_idioms",
-          "--warn",
-          "clippy::pedantic",
-          "--warn",
-          "clippy::pattern_type_mismatch",
-          -- Too noisy because it warns the whole function.
-          "--allow",
-          "clippy::too_many_lines",
-        },
-      },
-      diagnostics = {
-        warningsAsHelp = {
-          "clippy::pedantic",
-          "clippy::pattern_type_mismatch",
-        },
-        warningsAsInfo = {
-          -- I am not a big fan of this lint.
-          "clippy::type_complexity",
-        },
-      },
-    },
+    -- ['rust-analyzer'] = --[[ settings live in `rust-tools.lua` ]],
   }
 
   for server, settings in pairs(settings) do

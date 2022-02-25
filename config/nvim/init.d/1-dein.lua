@@ -21,6 +21,7 @@ add('milisims/nvim-luaref')
 add('neovim/nvim-lspconfig', { lazy = true, on_ft = { 'dhall', 'rust' } })
 add('rust-lang/rust.vim', { lazy = true, on_ft = 'rust' })
 add('Shougo/dein.vim')
+add('simrat39/rust-tools.nvim', { depends = 'nvim-lspconfig', lazy = true, on_ft = 'rust' })
 add('vmchale/dhall-vim')
 
 vim.fn['dein#end']()
