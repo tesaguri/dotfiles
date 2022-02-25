@@ -9,13 +9,9 @@ vim.opt.completeopt = {
 }
 
 -- Helper function.
-local if_visible = function(f)
+local function if_visible(f)
   return function(fallback)
-    if cmp.visible() then
-      f(fallback)
-    else
-      fallback()
-    end
+    if cmp.visible() then f(fallback) else fallback() end
   end
 end
 
@@ -32,7 +28,7 @@ cmp.setup {
     ['<Esc><Esc>'] = function(fallback) fallback() end,
     ['<Esc>'] = cmp.mapping {
       i = if_visible(cmp.mapping.abort()),
-    c = if_visible(cmp.mapping.close()),
+      c = if_visible(cmp.mapping.close()),
     },
     ['<CR>'] = if_visible(cmp.mapping.confirm()),
     ['<Tab>'] = if_visible(cmp.mapping.confirm { select = true }),
