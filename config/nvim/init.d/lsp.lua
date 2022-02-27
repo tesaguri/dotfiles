@@ -1,1 +1,1 @@
-require('init.lsp')
+require("init.lsp")

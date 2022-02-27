@@ -21,3 +21,22 @@ jobs:
           # Replace the severity so that the problem matcher can understand it.
           # <https://github.com/actions/toolkit/blob/f90a2dc/docs/problem-matchers.md#single-line-matchers>
           sed -E 's/^(.+):([0-9]+): (note|style): (.+)$/\1:\2: \3: \4\n\1:\2: warning: \4/g'
+  stylua:
+    name: Format Lua scripts with StyLua
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: JohnnyMorganz/stylua-action@1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --check .
+          version: '^0.12'
+  selene:
+    name: Lint Lua scripts with selene
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: NTBBloodbath/selene-action@v1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --quiet .

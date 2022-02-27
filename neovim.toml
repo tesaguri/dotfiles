@@ -1,0 +1,57 @@
+[selene]
+base = "lua51"
+
+# [selene.structs.Option.append]
+# method = true
+
+# [[selene.structs.Option.append.args]]
+# type = "any" # TODO: `bool | number | string | table`
+
+[[vim.api.nvim_buf_set_keymap.args]]
+type = "number"
+
+[[vim.api.nvim_buf_set_keymap.args]]
+type = "string"
+
+[[vim.api.nvim_buf_set_keymap.args]]
+type = "string"
+
+[[vim.api.nvim_buf_set_keymap.args]]
+type = "string"
+
+[[vim.api.nvim_buf_set_keymap.args]]
+type = "table"
+required = false
+
+[[vim.api.nvim_set_keymap.args]]
+type = "string"
+
+[[vim.api.nvim_set_keymap.args]]
+type = "string"
+
+[[vim.api.nvim_set_keymap.args]]
+type = "string"
+
+[[vim.api.nvim_set_keymap.args]]
+type = "table"
+required = false
+
+[[vim.cmd.args]]
+type = "string"
+
+[vim.env."*"]
+property = true
+writable = "overridden"
+
+[[vim.fn."*".args]]
+type = "..."
+
+[vim.lsp.protocol.make_client_capabilities]
+args = []
+
+[vim.opt."*"]
+any = true
+# TODO:
+# property = true
+# struct = "Option"
+# writable = "overridden"
