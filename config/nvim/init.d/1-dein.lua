@@ -1,6 +1,6 @@
 -- Reference: <https://github.com/Shougo/dein.vim/blob/def7391/README.md#quick-start>
 
-local base_path = (vim.env.XDG_CACHE_HOME or vim.env.HOME .. "/.cache") .. "/dein"
+local base_path = vim.fn.stdpath("cache") .. "/dein"
 vim.opt.runtimepath:append(base_path .. "/repos/github.com/Shougo/dein.vim")
 
 vim.fn["dein#begin"](base_path)
