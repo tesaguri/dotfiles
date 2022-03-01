@@ -4,7 +4,7 @@ function() {
 	fpath+=("$zfunc")
 
 	_compgen() {
-		if ! [[ "$zfunc/_$1" -nt "$(which "$1")" ]]; then
+		if ! [[ "$zfunc/_$1" -nt "$(command -v "$1")" ]]; then
 			"$@" > "$zfunc/_$1"
 		fi
 	}
