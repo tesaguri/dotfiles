@@ -45,6 +45,16 @@ writable = "overridden"
 
 [[vim.fn."*".args]]
 type = "..."
+required = false
+
+[[vim.gsplit.args]]
+type = "string"
+
+[[vim.gsplit.args]]
+type = "string"
+
+[[vim.gsplit.args]]
+type = "bool"
 
 [vim.lsp.protocol.make_client_capabilities]
 args = []

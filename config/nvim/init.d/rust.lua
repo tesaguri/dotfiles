@@ -7,8 +7,8 @@ util.autocmd("FileType", "rust", { once = true }, function()
     on_stdout = function(_, data)
       local toolchain = data[1]
       if toolchain ~= "" then
-        local toolchain = vim.fn.split(toolchain, " ")[1]
-        local rustup_home = vim.env.RUSTUP_HOME or vim.env.HOME .. "/.rustup"
+        local toolchain = vim.gsplit(toolchain, " ", true)()
+        local rustup_home = vim.env.RUSTUP_HOME or vim.fn.expand("~/.rustup")
         util.job_for_each_line(
           { "rustup", "component", "list", "--installed", "--toolchain", toolchain },
           function(line)
@@ -24,7 +24,6 @@ util.autocmd("FileType", "rust", { once = true }, function()
     end,
   })
 
-  vim.opt.path:append(
-    (vim.env.CARGO_HOME or vim.env.HOME .. "/.cargo") .. "/registry/src/github.com-1ecc6299db9ec823"
-  )
+  local cargo_home = (vim.env.CARGO_HOME or vim.fn.expand("~/.cargo"))
+  vim.opt.path:append(cargo_home .. "/registry/src/github.com-1ecc6299db9ec823")
 end)
