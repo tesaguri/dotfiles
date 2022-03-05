@@ -1,11 +1,11 @@
 local trust = require("trust")
-trust.load_state()
+trust.load()
 
 local expand = vim.fn.expand
 
-trust.trust(expand("~/workspace"))
-trust.distrust(expand("~/workspace/forks"))
-trust.trust(expand("~/.dotfiles"))
+trust.allow(expand("~/workspace"))
+trust.deny(expand("~/workspace/forks"))
+trust.allow(expand("~/.dotfiles"))
 
 local lsp = require("trust.lsp")
 lsp.safe_servers = { "dhall_lsp_server" }
