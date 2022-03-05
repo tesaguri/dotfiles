@@ -23,6 +23,12 @@ type = "string"
 type = "table"
 required = false
 
+[[vim.api.nvim_get_runtime_file.args]]
+type = "string"
+
+[[vim.api.nvim_get_runtime_file.args]]
+type = "bool"
+
 [[vim.api.nvim_set_keymap.args]]
 type = "string"
 
@@ -65,3 +71,13 @@ any = true
 # property = true
 # struct = "Option"
 # writable = "overridden"
+
+[[vim.split.args]]
+type = "string"
+
+[[vim.split.args]]
+type = "string"
+
+[[vim.split.args]]
+type = "table"
+required = false
