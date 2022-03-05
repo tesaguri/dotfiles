@@ -38,13 +38,25 @@ vim.fn["dein#set_hook"]("nvim-lspconfig", "hook_source", function()
     buf_map("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   end
 
+  local lua_path = vim.split(package.path, ";")
+  table.insert(lua_path, "lua/?.lua")
+  table.insert(lua_path, "lua/?/init.lua")
+
   local settings = {
-    ["dhall-lsp-server"] = {},
+    ["dhall_lsp_server"] = {},
+    ["sumneko_lua"] = {
+      -- Reference: `:help lspconfig-server-configurations`
+      Lua = {
+        runtime = { version = "LuaJIT", path = lua_path },
+        diagnostics = { globals = { "vim" } },
+        workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+      },
+    },
     -- ['rust-analyzer'] = --[[ settings live in `rust-tools.lua` ]],
   }
 
   for server, settings in pairs(settings) do
-    lspconfig[string.gsub(server, "-", "_")].setup {
+    lspconfig[server].setup {
       capabilities = capabilities,
       on_attach = M.on_attach,
       settings = settings,
