@@ -28,16 +28,11 @@ cmp.setup {
   mapping = {
     ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-    -- Double press `<Esc>` to trigger the fallback behavior immidiately.
-    ["<Esc><Esc>"] = function(fallback)
-      fallback()
-    end,
-    ["<Esc>"] = cmp.mapping {
-      i = if_visible(cmp.mapping.abort()),
-      c = if_visible(cmp.mapping.close()),
-    },
+    ["<C-y>"] = cmp.mapping { i = if_visible(cmp.mapping.close()) },
+    ["<C-e>"] = if_visible(cmp.mapping.abort()),
     ["<CR>"] = if_visible(cmp.mapping.confirm()),
-    ["<Tab>"] = if_visible(cmp.mapping.confirm { select = true }),
+    ["<Tab>"] = if_visible(cmp.mapping.select_next_item()),
+    ["<S-Tab>"] = if_visible(cmp.mapping.select_prev_item()),
   },
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
