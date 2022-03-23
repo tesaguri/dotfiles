@@ -5,5 +5,5 @@ export SSH_AUTH_SOCK
 
 gpgconf --launch gpg-agent
 
-eval "ssh() { gpg-connect-agent updatestartuptty /bye > /dev/null && $(command -pv ssh) \"\$@\"; }"
-eval "scp() { gpg-connect-agent updatestartuptty /bye > /dev/null && $(command -pv scp) \"\$@\"; }"
+eval "ssh() { gpg-connect-agent updatestartuptty /bye > /dev/null && $(whence -p ssh) \"\$@\"; }"
+eval "scp() { gpg-connect-agent updatestartuptty /bye > /dev/null && $(whence -p scp) \"\$@\"; }"
