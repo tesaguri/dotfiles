@@ -1,7 +1,8 @@
 -- Reference: <https://github.com/Shougo/dein.vim/blob/def7391/README.md#quick-start>
 
 local base_path = vim.fn.stdpath("cache") .. "/dein"
-vim.opt.runtimepath:append(base_path .. "/repos/github.com/Shougo/dein.vim")
+local dein_path = base_path .. "/repos/github.com/Shougo/dein.vim"
+vim.opt.runtimepath:append(dein_path)
 
 vim.fn["dein#begin"](base_path)
 local add = vim.fn["dein#add"]
@@ -23,9 +24,11 @@ add("nanotee/nvim-lua-guide")
 add("neovim/nvim-lspconfig", { lazy = true, on_ft = { "dhall", "lua", "rust" } })
 add("rhysd/conflict-marker.vim")
 add("rust-lang/rust.vim", { lazy = true, on_ft = "rust" })
-add("Shougo/dein.vim")
+add("Shougo/dein.vim", { merged = true })
 add("simrat39/rust-tools.nvim", { depends = "nvim-lspconfig", lazy = true, on_ft = "rust" })
 add("tesaguri/trust.vim")
 add("vmchale/dhall-vim")
 
 vim.fn["dein#end"]()
+
+vim.opt.runtimepath:remove(dein_path)
