@@ -19,6 +19,7 @@ add("hrsh7th/cmp-nvim-lsp", { lazy = true, on_source = "nvim-lspconfig" })
 add("hrsh7th/cmp-vsnip")
 add("hrsh7th/nvim-cmp")
 add("hrsh7th/vim-vsnip")
+add("lambdalisue/vital-Whisky")
 add("milisims/nvim-luaref")
 add("nanotee/nvim-lua-guide")
 add("neovim/nvim-lspconfig", { lazy = true, on_ft = { "dhall", "lua", "rust" } })
@@ -27,6 +28,13 @@ add("rust-lang/rust.vim", { lazy = true, on_ft = "rust" })
 add("Shougo/dein.vim", { merged = true })
 add("simrat39/rust-tools.nvim", { depends = "nvim-lspconfig", lazy = true, on_ft = "rust" })
 add("tesaguri/trust.vim")
+add("vim-jp/vital.vim", {
+  -- `:Vitalize` requires its runtimepath to be a git repository rather than a merged one.
+  lazy = true,
+  on_cmd = "Vitalize",
+  -- I want to experiment with it when editing a Vim script file.
+  on_ft = "vim",
+})
 add("vmchale/dhall-vim")
 
 vim.fn["dein#end"]()
