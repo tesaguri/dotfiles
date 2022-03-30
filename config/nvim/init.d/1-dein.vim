@@ -23,7 +23,7 @@ call dein#add('lambdalisue/vital-Whisky')
 call dein#add('milisims/nvim-luaref')
 call dein#add('rhysd/conflict-marker.vim')
 call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
-call dein#add('Shougo/dein.vim', {'merged': 1})
+call dein#add('Shougo/dein.vim')
 call dein#add('tesaguri/trust.vim')
 " `:Vitalize` requires its runtimepath to be a git repository rather than a merged one.
 call dein#add('vim-jp/vital.vim', {
@@ -50,8 +50,6 @@ if has('nvim')
 endif
 
 call dein#end()
-
-execute 'set runtimepath-=' . s:dein_path
 
 " See `:help dein-options-hook_post_source`.
 autocmd VimEnter * call dein#call_hook('post_source')
