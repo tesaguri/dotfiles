@@ -4,11 +4,8 @@ let &mouse = 'a'
 
 " Appearance
 set colorcolumn+=101
-if exists('+cursorlineopt')
-  let &cursorline = 1
-  let &cursorlineopt = 'number'
-endif
 let &number = 1
+let &relativenumber = 1
 let &termguicolors = 1
 if exists('+winblend')
   let &winblend = 30

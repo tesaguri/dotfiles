@@ -1,1 +1,0 @@
-highlight LineNr guifg=DarkYellow
