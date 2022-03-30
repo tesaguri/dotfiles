@@ -1,6 +1,13 @@
+" It seems not be worth the trouble to make it compatible with Vim.
+if !has('nvim')
+  finish
+endif
+
+lua <<EOF
 local util = require("init.util")
 
 util.autocmd("FileType", "rust", { once = true }, function()
+
   -- Add `rust-src` to `path`:
   vim.fn.jobstart({ "rustup", "show", "active-toolchain" }, {
     stdout_buffered = true,
@@ -27,3 +34,4 @@ util.autocmd("FileType", "rust", { once = true }, function()
   local cargo_home = (vim.env.CARGO_HOME or vim.fn.expand("~/.cargo"))
   vim.opt.path:append(cargo_home .. "/registry/src/github.com-1ecc6299db9ec823")
 end)
+EOF
