@@ -52,7 +52,7 @@ endif
 call dein#end()
 
 " See `:help dein-options-hook_post_source`.
-autocmd VimEnter * call dein#call_hook('post_source')
+autocmd vimrc VimEnter * call dein#call_hook('post_source')
 
 filetype plugin indent on
 syntax enable

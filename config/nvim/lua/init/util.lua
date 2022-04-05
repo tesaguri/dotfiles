@@ -42,7 +42,7 @@ local autocmds = {}
 function M.autocmd(event, pat, opts, cmd)
   opts = opts or {}
 
-  local args = "autocmd " .. event .. " " .. pat
+  local args = "autocmd vimrc " .. event .. " " .. pat
   if opts.once then
     args = args .. " ++once"
   end
