@@ -1,3 +1,16 @@
+" Cherry-pick `:help nvim-defaults` {{{1
+if !has('nvim')
+  let &autoindent = 1
+  let &autoread = 1
+  " Vim does not seem to detect background color of my Alacritty correctly.
+  let &background = 'dark'
+  let &encoding = 'utf-8'
+  let &hlsearch = 1
+  let &incsearch = 1
+  let &smarttab = 1
+  let &ttyfast = 1
+endif
+
 " Interface {{{1
 set clipboard+=unnamedplus
 let &mouse = 'a'

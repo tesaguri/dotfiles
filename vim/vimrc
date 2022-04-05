@@ -1,0 +1,13 @@
+" Basic setup for Vim {{{1
+" Vim is already older than I am. Why should I care compatibility with even older Vi?
+" vint: next-line -ProhibitSetNoCompatible " This is the very first code line of vimrc.
+if &compatible | set nocompatible | endif
+
+" Skip loading in tiny and small versions of Vim.
+if !1 | finish | endif
+
+" }}}
+
+execute 'source ' . expand('<sfile>:h') . '/init.vim'
+
+" vim: fdm=marker
