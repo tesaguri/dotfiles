@@ -17,7 +17,9 @@ call dein#begin(s:base_path)
 " if dein#check_install() | call dein#install() | else | call dein#recache_runtimepath() | endif
 
 call dein#add('chrisbra/Recover.vim')
-call dein#add('editorconfig/editorconfig-vim')
+call dein#add('editorconfig/editorconfig-vim', {
+  \'hook_post_source': 'source ' . s:srcdir . '/editorconfig.vim',
+  \})
 call dein#add('euclidianAce/BetterLua.vim')
 call dein#add('lambdalisue/vital-Whisky')
 call dein#add('milisims/nvim-luaref')
