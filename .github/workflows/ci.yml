@@ -40,3 +40,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --quiet .
+  vint:
+    name: Lint Vim scripts with Vint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip install vim-vint
+      - run: vint --warning --verbose config/nvim/
