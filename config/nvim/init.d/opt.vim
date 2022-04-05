@@ -1,8 +1,8 @@
-" Interface
+" Interface {{{1
 set clipboard+=unnamedplus
 let &mouse = 'a'
 
-" Appearance
+" Appearance {{{1
 set colorcolumn+=101
 let &number = 1
 let &relativenumber = 1
@@ -16,3 +16,13 @@ if !has('nvim')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
+
+" Indent {{{1
+let &copyindent = 1
+let &expandtab = 1
+let &shiftwidth = 4
+let &smartindent = 1
+let &softtabstop = -1
+
+" }}}
+" vim: fdm=marker

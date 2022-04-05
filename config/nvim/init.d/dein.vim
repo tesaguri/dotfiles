@@ -24,7 +24,7 @@ call dein#add('milisims/nvim-luaref')
 call dein#add('rhysd/conflict-marker.vim')
 call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
 call dein#add('Shougo/dein.vim')
-call dein#add('tesaguri/trust.vim')
+call dein#add('tesaguri/trust.vim', {'hook_post_source': 'source ' . s:srcdir . '/trust.vim'})
 " `:Vitalize` requires its runtimepath to be a git repository rather than a merged one.
 call dein#add('vim-jp/vital.vim', {
   \'lazy': 1,
