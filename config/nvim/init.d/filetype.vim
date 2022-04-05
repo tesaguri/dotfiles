@@ -1,9 +1,8 @@
 " Rust {{{1
 if has('nvim') " It seems not be worth the trouble to make it compatible with Vim.
-  lua <<EOF
-  local util = require("init.util")
-
-  util.autocmd("FileType", "rust", { once = true }, function()
+  function s:Rust()
+    lua <<EOF
+    local util = require("init.util")
 
     -- Add `rust-src` to `path`:
     vim.fn.jobstart({ "rustup", "show", "active-toolchain" }, {
@@ -30,8 +29,10 @@ if has('nvim') " It seems not be worth the trouble to make it compatible with Vi
 
     local cargo_home = (vim.env.CARGO_HOME or vim.fn.expand("~/.cargo"))
     vim.opt.path:append(cargo_home .. "/registry/src/github.com-1ecc6299db9ec823")
-  end)
 EOF
+  endfunction
+
+  autocmd vimrc FileType * ++once call s:Rust()
 endif
 " }}}
 

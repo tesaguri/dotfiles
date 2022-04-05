@@ -37,42 +37,4 @@ function M.job_for_each_line(cmd, f)
   })
 end
 
-local autocmds = {}
-
-function M.autocmd(event, pat, opts, cmd)
-  opts = opts or {}
-
-  local args = "autocmd vimrc " .. event .. " " .. pat
-  if opts.once then
-    args = args .. " ++once"
-  end
-  if opts.nested then
-    args = args .. " ++nested"
-  end
-
-  if type(cmd) == "function" then
-    local fptr
-    if opts.once then
-      local cmd = function()
-        cmd()
-        autocmds[fptr] = nil
-      end
-      -- Generate `fptr` key from local `cmd` instead of argument `cmd` to prevent using
-      -- `autocmds[fptr]` after freeing when calling `M.autocmd` with same function multiple times.
-      fptr = tonumber(("%p"):format(cmd))
-      autocmds[fptr] = cmd
-    else
-      fptr = tonumber(("%p"):format(cmd))
-      autocmds[fptr] = cmd
-    end
-    vim.cmd(args .. " lua require('init.util')._au_call(" .. fptr .. ")")
-  else
-    vim.cmd(args .. " " .. cmd)
-  end
-end
-
-function M._au_call(fptr)
-  autocmds[fptr]()
-end
-
 return M
