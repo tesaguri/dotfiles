@@ -14,9 +14,6 @@ let s:srcdir = expand('<sfile>:h') . '/dein'
 call dein#begin(s:base_path)
 
 " List of plugins {{{1
-" Be sure to execute the following command after editing this:
-" if dein#check_install() | call dein#install() | else | call dein#recache_runtimepath() | endif
-
 " Language support:
 call dein#add('euclidianAce/BetterLua.vim')
 " Despite the plugin's name, Lua Reference Manual is useful outside Neovim too.
@@ -67,8 +64,19 @@ endif
 " Postlude {{{1
 call dein#end()
 
-" See `:help dein-options-hook_post_source`.
-autocmd vimrc VimEnter * call dein#call_hook('post_source')
+" Regenerate the runtimepath after this file is modified (and possibly plugin configs are changed).
+execute 'autocmd vimrc BufWritePost ' . resolve(expand('<sfile>')) . ' ++once'
+  \ . ' source ' . expand('<sfile>')
+  \ . ' | if dein#check_install()'
+  \ . ' | call dein#install()'
+  \ . ' | else'
+  \ . ' | call dein#recache_runtimepath()'
+  \ . ' | endif'
+
+if has('vim_starting')
+  " See `:help dein-options-hook_post_source`.
+  autocmd vimrc VimEnter * call dein#call_hook('post_source')
+endif
 
 if !has('nvim')
   filetype plugin indent on
