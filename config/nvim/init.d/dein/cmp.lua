@@ -28,7 +28,7 @@ cmp.setup {
   mapping = {
     ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-    ["<C-y>"] = cmp.mapping { i = if_visible(cmp.mapping.close()) },
+    ["<C-y>"] = cmp.mapping { i = if_visible(cmp.mapping.confirm()) },
     ["<C-e>"] = if_visible(cmp.mapping.abort()),
     ["<Tab>"] = if_visible(cmp.mapping.select_next_item()),
     ["<S-Tab>"] = if_visible(cmp.mapping.select_prev_item()),
