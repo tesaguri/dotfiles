@@ -41,6 +41,15 @@ call dein#add('lambdalisue/vital-Whisky')
 " Don't be too afraid of adding Neovim-specific plugins.
 " I only use Vim in limited situations like through SSH and don't demand fancy things from it.
 if has('nvim')
+  " Language support:
+  " `nvim-treesitter` installs parsers to its runtimepath.
+  " If it were merged, the parsers would be overwritten by `dein#recache_runtimepath()`.
+  call dein#add('nvim-treesitter/nvim-treesitter', {
+    \'hook_post_source': 'luafile ' . s:srcdir . '/nvim-treesitter.lua',
+    \'lazy': 1,
+    \'on_ft': ['html', 'javascript', 'json', 'sh'],
+    \})
+
   " LSP clients:
   call dein#add('neovim/nvim-lspconfig', {'lazy': 1, 'on_ft': ['dhall', 'lua', 'rust']})
   call dein#add('simrat39/rust-tools.nvim', {
