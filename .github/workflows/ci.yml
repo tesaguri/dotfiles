@@ -46,4 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pip install vim-vint
-      - run: vint --warning --verbose config/nvim/ vim/
+      - run: |
+          # Exclude files that use newer syntaxes which Vint does not recognize.
+          find . \( -type f ! -path ./config/nvim/init.d/filetype.vim -name '*.vim' -or -name vimrc \) \
+            -exec vint --warning --verbose {} +

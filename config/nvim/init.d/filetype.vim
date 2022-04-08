@@ -1,39 +1,34 @@
 " Rust {{{1
-if has('nvim') " It seems not be worth the trouble to make it compatible with Vim.
-  function s:Rust()
-    lua <<EOF
-    local util = require("init.util")
+function s:Rust()
+  if !exists('s:crates_io_src')
+    let l:cargo_home = empty($CARGO_HOME) ? expand('~/.cargo') : $CARGO_HOME
+    let s:crates_io_src = l:cargo_home . '/registry/src/github.com-1ecc6299db9ec823'
+  endif
+  execute 'setlocal path+=' . s:crates_io_src
 
-    -- Add `rust-src` to `path`:
-    vim.fn.jobstart({ "rustup", "show", "active-toolchain" }, {
-      stdout_buffered = true,
-      on_stdout = function(_, data)
-        local toolchain = data[1]
-        if toolchain ~= "" then
-          local toolchain = vim.gsplit(toolchain, " ", true)()
-          local rustup_home = vim.env.RUSTUP_HOME or vim.fn.expand("~/.rustup")
-          util.job_for_each_line(
-            { "rustup", "component", "list", "--installed", "--toolchain", toolchain },
-            function(line)
-              if line == "rust-src" then
-                vim.opt.path:append(
-                  rustup_home .. "/toolchains/" .. toolchain .. "/lib/rustlib/src/rust/library"
-                )
-                return true
-              end
-            end
-          )
-        end
-      end,
-    })
+  " Add `rust-src` to `path`:
+  if exists('s:rust_src')
+    execute 'setlocal path+=' . s:rust_src
+  elseif exists('*jobstart')
+    function! s:rustup_show_on_stdout(_job, data, _event)
+      let l:toolchain = a:data[0]
+      if empty(l:toolchain)
+        return
+      endif
+      let l:toolchain = split(l:toolchain)[0]
+      let l:rustup_home = empty($RUSTUP_HOME) ? expand('~/.rustup') : $RUSTUP_HOME
+      let s:rust_src =
+        \l:rustup_home .. '/toolchains/' .. l:toolchain .. '/lib/rustlib/src/rust/library'
+      execute 'setlocal path+=' .. s:rust_src
+    endfunction
 
-    local cargo_home = (vim.env.CARGO_HOME or vim.fn.expand("~/.cargo"))
-    vim.opt.path:append(cargo_home .. "/registry/src/github.com-1ecc6299db9ec823")
-EOF
-  endfunction
-
-  autocmd vimrc FileType * ++once call s:Rust()
-endif
+    call jobstart(['rustup', 'show', 'active-toolchain'], #{
+      \stdout_buffered: 1,
+      \on_stdout: funcref('s:rustup_show_on_stdout'),
+      \})
+  endif
+endfunction
+autocmd vimrc FileType rust call s:Rust()
 " }}}
 
 " vim:fdm=marker
