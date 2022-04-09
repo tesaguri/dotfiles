@@ -21,6 +21,14 @@ call dein#add('milisims/nvim-luaref')
 call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
 call dein#add('vmchale/dhall-vim')
 
+" Lilypond bundles a Vim plugin with it.
+for s:rtp in glob('/usr/local/share/lilypond/*/vim', 1, 1)
+  call dein#add(s:rtp, {'merged': 1})
+  " Sourcing one version should be enough.
+  " (dein would overwrite the runtime files while merging the runtimepath otherwise)
+  break
+endfor
+
 call dein#add('chrisbra/Recover.vim')
 call dein#add('editorconfig/editorconfig-vim', {
   \'hook_post_source': 'source ' . s:srcdir . '/editorconfig.vim',
