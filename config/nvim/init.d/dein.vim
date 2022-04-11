@@ -28,7 +28,7 @@ call dein#add('vmchale/dhall-vim')
 
 " LilyPond, the GNU music engraving program, bundles a Vim plugin with it.
 for s:rtp in glob('/usr/local/share/lilypond/*/vim', 1, 1)
-  call dein#add(s:rtp, {'merged': 1})
+  call dein#add(s:rtp, {'merged': 1, 'name': 'lilypond'})
   " Sourcing one version should be enough.
   " (dein would overwrite the runtime files while merging the runtimepath otherwise)
   break
