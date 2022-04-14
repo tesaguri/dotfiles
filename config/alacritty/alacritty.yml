@@ -14,3 +14,41 @@ key_bindings:
   # Config for the JIS keyboard.
   - { key: Semicolon, mods: Shift|Command, action: IncreaseFontSize }
   - { key: Yen, chars: \ }
+
+  # Reproduce `alt_send_esc: true` behavior for Option key on macOS.
+  - { key: Key0, mods: Option, chars: "\x1b0" }
+  - { key: Key1, mods: Option, chars: "\x1b1" }
+  - { key: Key2, mods: Option, chars: "\x1b2" }
+  - { key: Key3, mods: Option, chars: "\x1b3" }
+  - { key: Key4, mods: Option, chars: "\x1b4" }
+  - { key: Key5, mods: Option, chars: "\x1b5" }
+  - { key: Key6, mods: Option, chars: "\x1b6" }
+  - { key: Key7, mods: Option, chars: "\x1b7" }
+  - { key: Key8, mods: Option, chars: "\x1b8" }
+  - { key: Key9, mods: Option, chars: "\x1b9" }
+  - { key: 'A', mods: Option, chars: "\x1bA" }
+  - { key: 'B', mods: Option, chars: "\x1bB" }
+  - { key: 'C', mods: Option, chars: "\x1bC" }
+  - { key: 'D', mods: Option, chars: "\x1bD" }
+  - { key: 'E', mods: Option, chars: "\x1bE" }
+  - { key: 'F', mods: Option, chars: "\x1bF" }
+  - { key: 'G', mods: Option, chars: "\x1bG" }
+  - { key: 'H', mods: Option, chars: "\x1bH" }
+  - { key: 'I', mods: Option, chars: "\x1bI" }
+  - { key: 'J', mods: Option, chars: "\x1bJ" }
+  - { key: 'K', mods: Option, chars: "\x1bK" }
+  - { key: 'L', mods: Option, chars: "\x1bL" }
+  - { key: 'M', mods: Option, chars: "\x1bM" }
+  - { key: 'N', mods: Option, chars: "\x1bN" }
+  - { key: 'O', mods: Option, chars: "\x1bO" }
+  - { key: 'P', mods: Option, chars: "\x1bP" }
+  - { key: 'Q', mods: Option, chars: "\x1bQ" }
+  - { key: 'R', mods: Option, chars: "\x1bR" }
+  - { key: 'S', mods: Option, chars: "\x1bS" }
+  - { key: 'T', mods: Option, chars: "\x1bT" }
+  - { key: 'U', mods: Option, chars: "\x1bU" }
+  - { key: 'V', mods: Option, chars: "\x1bV" }
+  - { key: 'W', mods: Option, chars: "\x1bW" }
+  - { key: 'X', mods: Option, chars: "\x1bX" }
+  - { key: 'Y', mods: Option, chars: "\x1bY" }
+  - { key: 'Z', mods: Option, chars: "\x1bZ" }
