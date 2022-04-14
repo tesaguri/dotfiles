@@ -22,6 +22,8 @@ if dein#min#load_state(s:base_path)
   " Adds the Lua 5.1 Reference Manual to `:help`.
   " Despite the plugin's name, Lua Reference Manual is useful outside Neovim too.
   call dein#add('milisims/nvim-luaref')
+  " Syntax and key mappings for Markdown.
+  call dein#add('preservim/vim-markdown')
   " Syntax and ftplugin for Rust, the best systems programming language ever.
   call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
   " Syntax for Dhall, a programmable configuration language.
@@ -36,20 +38,73 @@ if dein#min#load_state(s:base_path)
   endfor
 
   " Editor utilities:
+  " Shows Git diffs as |signs|.
+  call dein#add('airblade/vim-gitgutter')
   " Shows diff between the swap and on-disk files in |recovery|.
   call dein#add('chrisbra/Recover.vim')
+  " Key mappings for consistent navigation between Vim windows and tmux panes.
+  call dein#add('christoomey/vim-tmux-navigator')
   " Reads EditorConfig and sets various options accordingly.
   call dein#add('editorconfig/editorconfig-vim', {
         \'hook_source': 'source ' . s:srcdir . '/editorconfig.vim',
         \})
+  " `statusline` and `tabline` manager.
+  " You need to either define `g:lightline` before `lightline` is sourced or call `lightline#init()`
+  " after defining `g:lightline`.
+  call dein#add('itchyny/lightline.vim', {'hook_source': 'source ' . s:srcdir . '/lightline.vim'})
+  " Transparent editing of GPG encrypted files.
+  call dein#add('jamessan/vim-gnupg', {'hook_source': 'source ' . s:srcdir . '/gnupg.vim'})
   " Git conflict marker manipulation.
   call dein#add('rhysd/conflict-marker.vim')
+  " Filesystem browser.
+  call dein#add('scrooloose/nerdtree')
   " The package manager powering this very file.
   call dein#add('Shougo/dein.vim')
+  " Adds `:AsyncRun` command to run shell commands asynchronously.
+  call dein#add('skywind3000/asyncrun.vim')
   " "Workspace Trust" manager.
   call dein#add('tesaguri/trust.vim', {'hook_post_source': 'source ' . s:srcdir . '/trust.vim'})
+  " Key mappings for exchanging a pair of texts.
+  call dein#add('tommcdo/vim-exchange')
+  " Key mappings for commenting out and uncommenting.
+  call dein#add('tomtom/tcomment_vim')
+  " Git wrapper that should be illegal.
+  call dein#add('tpope/vim-fugitive')
+  " Framework to allow plugin mappings to be repeated by the `.` command.
+  call dein#add('tpope/vim-repeat')
+  " |text-object| like key mappings for editing "surroundings" (like pairs of parentheses).
+  call dein#add('tpope/vim-surround')
+  " Runs various linters and sets |signs| asynchronously.
+  call dein#add('w0rp/ale')
+
+  " I like matchit plugin but I don't like the way Neovim adds it to runtimepath by default nor the
+  " editor's recommended way of disabling it (i.e. `:let loaded_matchit = 1` in vimrc, which is not
+  " true! Other plugins would be confused by it).
+  if has('nvim') || has('patch-8.1.1114') " Upstream `matchit` now uses `..` operator.
+    call dein#add('chrisbra/matchit')
+  else
+    " Use the version of matchit bundled with Vim 8 (|matchit-install|).
+    let s:rtp = globpath(&packpath, 'pack/dist/opt/matchit', 1, 1)
+    if !empty(s:rtp)
+      call dein#add(s:rtp[0])
+    endif
+  endif
+
+  " Vim support for fzf, a command-line fuzzy finder.
+  " Prefer the local version that is more likely to be compatible with the installed binary.
+  if isdirectory('/usr/local/opt/fzf/plugin')
+    " The `opt/fzf` directory contains a lot of unrelated filed like the `fzf` binary and is not
+    " suitable for merging. Also, `fzf.vim` and `fzf` have `plugin/fzf.vim` and merging both would
+    " result in a conflict.
+    call dein#add('/usr/local/opt/fzf', {'merged': 0})
+  elseif executable('fzf')
+    call dein#add('junegunn/fzf', {'merged': 0})
+  endif
+  call dein#add('junegunn/fzf.vim')
 
   " Vim plugin development:
+  " Test framework for Vim script.
+  call dein#add('thinca/vim-themis')
   " A package manager and a library with standard utilities.
   " `:Vitalize` requires its runtimepath to be a git repository rather than a merged one.
   call dein#add('vim-jp/vital.vim', {
