@@ -40,7 +40,7 @@ if dein#min#load_state(s:base_path)
   call dein#add('chrisbra/Recover.vim')
   " Reads EditorConfig and sets various options accordingly.
   call dein#add('editorconfig/editorconfig-vim', {
-        \'hook_post_source': 'source ' . s:srcdir . '/editorconfig.vim',
+        \'hook_source': 'source ' . s:srcdir . '/editorconfig.vim',
         \})
   " Git conflict marker manipulation.
   call dein#add('rhysd/conflict-marker.vim')
@@ -70,7 +70,7 @@ if dein#min#load_state(s:base_path)
     call dein#add('nvim-treesitter/nvim-treesitter', {
           \'hook_post_source': 'luafile ' . s:srcdir . '/nvim-treesitter.lua',
           \'lazy': 1,
-          \'on_ft': ['html', 'javascript', 'json', 'sh'],
+          \'on_ft': ['html', 'javascript', 'json', 'sh', 'xml'],
           \})
 
     " LSP clients:
@@ -105,6 +105,7 @@ if dein#min#load_state(s:base_path)
   call dein#end()
   call dein#save_state()
 endif
+call dein#call_hook('source')
 
 " Regenerate the runtimepath after this file is modified (and possibly plugin configs are changed).
 execute 'autocmd vimrc BufWritePost ' . resolve(expand('<sfile>')) . ' ++once'
