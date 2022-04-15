@@ -8,7 +8,7 @@ map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
 map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
 map("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 
-vim.fn["dein#set_hook"]("nvim-lspconfig", "hook_source", function()
+vim.call("dein#set_hook", "nvim-lspconfig", "hook_source", function()
   local lspconfig = require("lspconfig")
 
   local capabilities = vim.lsp.protocol.make_client_capabilities()
