@@ -1,5 +1,7 @@
 " Basic setup for Vim {{{1
 " Vim is already older than I am. Why should I care compatibility with even older Vi?
+" Also, I don't care about POSIX-compliance of an interactive interface like Vi(m). Indeed,
+" compatibility matters for plugins, but few, if any, people writes plugins for (POSIX-)Vi nowadays.
 " vint: next-line -ProhibitSetNoCompatible " This is the very first code line of vimrc.
 if &compatible | set nocompatible | endif
 
