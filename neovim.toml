@@ -42,6 +42,13 @@ type = "string"
 type = "table"
 required = false
 
+[[vim.call.args]]
+type = "string"
+
+[[vim.call.args]]
+type = "..."
+required = false
+
 [[vim.cmd.args]]
 type = "string"
 
