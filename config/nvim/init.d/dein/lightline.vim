@@ -20,11 +20,52 @@ function LightlineGitBranch()
     \ : l:head . ' ' . (exists('b:init_git_allowed') ? (b:init_git_allowed ? '✔' : '✘') : '…')
 endfunction
 
+function s:ale_diagnostics()
+  let l:c = ale#statusline#Count(bufnr())
+  return [l:c.error + l:c.style_error, l:c.warning + l:c.style_warning, l:c.info]
+endfunction
+
+if has('nvim')
+  function s:diagnostics()
+    let l:c = s:ale_diagnostics()
+    let l:c[0] += luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.E })')
+    let l:c[1] += luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.W })')
+    let l:c[2] += luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.I })')
+    return l:c
+  endfunction
+else
+  let s:diagnostics = funcref('s:ale_diagnostics')
+endif
+
+function LightlineDiagnostic()
+  let l:c = s:diagnostics()
+  return l:c[0] + l:c[1] + l:c[2] ? '× ' . l:c[0] . ' ⚠ ' . l:c[1] . ' i ' . l:c[2] : ''
+endfunction
+
+function LightlineCwd()
+  return fnamemodify(getcwd(), ':~')
+endfunction
+
+" Print `fileformat` and `fileencoding` only for uncommon ones.
+function LightlineFileFormat()
+  return &fileformat is# 'unix' ? '' : &fileformat
+endfunction
+
+function LightlineFileEncoding()
+  return (&fileencoding is# 'utf-8' || empty(&fileencoding)) ? '' : &fileencoding
+endfunction
+
 let g:lightline = {
   \'active': {
     \'left': [
       \['mode', 'paste'],
-      \['gitbranch', 'readonly', 'relativepath', 'modified'],
+      \['gitbranch', 'readonly', 'relativepath', 'modified', 'diagnostic'],
+      \['fileformat', 'fileencoding', 'filetype'],
+      \],
+    \'right': [
+      \['lineinfo'],
+      \['percent'],
+      \['cwd'],
       \],
     \},
   \'component': {
@@ -32,5 +73,9 @@ let g:lightline = {
     \},
   \'component_function': {
     \'gitbranch': 'LightlineGitBranch',
+    \'diagnostic': 'LightlineDiagnostic',
+    \'fileformat': 'LightlineFileFormat',
+    \'fileencoding': 'LightlineFileEncoding',
+    \'cwd': 'LightlineCwd',
     \},
   \}
