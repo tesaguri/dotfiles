@@ -37,6 +37,6 @@ let &fileencodings = 'ucs-bom,utf-8,sjis,cp932,euc-jp,default,latin1'
 let &shiftwidth = 4
 let &smartindent = 1
 let &softtabstop = -1
-
 " }}}
+
 " vim: fdm=marker

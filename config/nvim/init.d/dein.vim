@@ -15,7 +15,7 @@ if dein#min#load_state(s:base_path)
   call dein#begin(s:base_path)
 
   " List of plugins {{{1
-  " Language support:
+  " Language support {{{2
   " Lua syntax that aims at being better than built-in one.
   " Specifically, it highlights EmmyLua annotations nicely.
   call dein#add('euclidianAce/BetterLua.vim')
@@ -37,7 +37,7 @@ if dein#min#load_state(s:base_path)
     break
   endfor
 
-  " Editor utilities:
+  " Editor utilities {{{2
   " Shows Git diffs as |signs|.
   call dein#add('airblade/vim-gitgutter')
   " Shows diff between the swap and on-disk files in |recovery|.
@@ -102,7 +102,7 @@ if dein#min#load_state(s:base_path)
   endif
   call dein#add('junegunn/fzf.vim')
 
-  " Vim plugin development:
+  " Vim plugin development {{{2
   " Test framework for Vim script.
   call dein#add('thinca/vim-themis')
   " A package manager and a library with standard utilities.
@@ -115,10 +115,14 @@ if dein#min#load_state(s:base_path)
   " External module collection for `vital`.
   call dein#add('lambdalisue/vital-Whisky')
 
-  " Don't be too afraid of adding Neovim-specific plugins.
+  " Neovim-specific plugins {{{2
+  " Don't be too afraid of adding plugins here.
   " I only use Vim in limited situations like through SSH and don't demand fancy things from it.
   if has('nvim')
-    " Language support:
+    " Language support {{{3
+    " An introduction `:help` text to Neovim's Lua interface.
+    " Unlike `nvim-luaref`, this is specific to Neovim and does not make much sense outside it.
+    call dein#add('nanotee/nvim-lua-guide')
     " Installs and configures various tree-sitter parsers.
     " The plugin installs parsers to its runtimepath and if it were merged, the parsers would be
     " overwritten by `dein#recache_runtimepath()`.
@@ -128,7 +132,7 @@ if dein#min#load_state(s:base_path)
           \'on_ft': ['html', 'javascript', 'json', 'sh', 'xml'],
           \})
 
-    " LSP clients:
+    " LSP clients {{{3
     " Collection of configurations for Neovim's built-in LSP client.
     call dein#add('neovim/nvim-lspconfig', {'lazy': 1, 'on_ft': ['dhall', 'lua', 'rust']})
     " Extra tools for `rust-analyzer` LSP client.
@@ -139,11 +143,7 @@ if dein#min#load_state(s:base_path)
           \'on_ft': 'rust',
           \})
 
-    " An introduction `:help` text to Neovim's Lua interface.
-    " Unlike `nvim-luaref`, this is specific to Neovim and does not make much sense outside it.
-    call dein#add('nanotee/nvim-lua-guide')
-
-    " `nvim-cmp` completion framework and its integrations:
+    " `nvim-cmp` completion framework and its integrations {{{3
     " The completion framework itself.
     call dein#add('hrsh7th/nvim-cmp', {'hook_post_source': 'luafile ' . s:srcdir . '/cmp.lua'})
     " Completion source for words in current buffer.
