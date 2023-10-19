@@ -96,18 +96,6 @@ if dein#min#load_state(s:base_path)
     endif
   endif
 
-  " Vim support for fzf, a command-line fuzzy finder.
-  " Prefer the local version that is more likely to be compatible with the installed binary.
-  if isdirectory('/usr/local/opt/fzf/plugin')
-    " The `opt/fzf` directory contains a lot of unrelated filed like the `fzf` binary and is not
-    " suitable for merging. Also, `fzf.vim` and `fzf` have `plugin/fzf.vim` and merging both would
-    " result in a conflict.
-    call dein#add('/usr/local/opt/fzf', {'merged': 0})
-  elseif ExecutableSuccess('fzf --version')
-    call dein#add('junegunn/fzf', {'merged': 0})
-  endif
-  call dein#add('junegunn/fzf.vim')
-
   " Vim plugin development {{{2
   " Test framework for Vim script.
   call dein#add('thinca/vim-themis')
