@@ -15,6 +15,10 @@ endif
 
 " Interface {{{1
 set clipboard+=unnamedplus
+if ExecutableSuccess('rg --version')
+  let &grepprg = 'rg --vimgrep "$@"'
+  let &grepformat = '%f:%l:%c:%m'
+endif
 let &mouse = 'a'
 if has('patch-8.2.4325')
   set wildoptions+=pum
