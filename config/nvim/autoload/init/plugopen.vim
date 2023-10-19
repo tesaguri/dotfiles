@@ -36,7 +36,7 @@ function! init#plugopen#command(plugin, ...) abort
     endif
   endif
 
-  execute 'edit ' . l:file
+  execute 'edit ' . fnameescape(l:file)
   setlocal nomodifiable readonly
 
   if exists('l:help')

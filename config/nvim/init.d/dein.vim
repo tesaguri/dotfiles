@@ -7,7 +7,7 @@ let g:dein#cache_directory = (empty($XDG_CACHE_HOME)
   \ : $XDG_CACHE_HOME) . '/dein'
 
 let s:dein_path = s:base_path . '/repos/github.com/Shougo/dein.vim'
-execute 'set runtimepath+=' . s:dein_path
+execute 'set runtimepath+=' . SetEscape(s:dein_path)
 
 let s:srcdir = expand('<sfile>:h') . '/dein'
 
@@ -163,8 +163,8 @@ endif
 call dein#call_hook('source')
 
 " Install new packages when this file is modified.
-execute 'autocmd vimrc BufWritePost ' . resolve(expand('<sfile>')) . ' ++once'
-  \ . ' source ' . expand('<sfile>')
+execute 'autocmd vimrc BufWritePost ' . fnameescape(resolve(expand('<sfile>'))) . ' ++once'
+  \ . ' source ' . fnameescape(expand('<sfile>'))
   \ . ' | if dein#check_install()'
   \ . ' | call dein#install()'
   \ . ' | endif'

@@ -4,9 +4,11 @@ augroup vimrc
   autocmd!
 augroup END
 
+execute 'source ' . fnameescape(s:srcdir . '/util.vim')
+
 function s:Main()
   for l:src in glob(s:srcdir . '/init.d/*.vim', 0, 1)
-    execute 'source ' . l:src
+    execute 'source ' . fnameescape(l:src)
   endfor
 endfunction
 
