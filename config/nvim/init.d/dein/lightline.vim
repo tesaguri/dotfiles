@@ -64,7 +64,7 @@ function LightlineFileFormat()
 endfunction
 
 function LightlineFileEncoding()
-  return (&fileencoding is# 'utf-8' || empty(&fileencoding)) ? '' : &fileencoding
+  return &fileencoding is# 'utf-8' ? '' : &fileencoding
 endfunction
 
 let s:lmid = []
