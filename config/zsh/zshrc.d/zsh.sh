@@ -12,5 +12,6 @@ function() {
 	bindkey -e
 
 	export PROMPT='%0(?.%F{green}✔.%130(?.%F{yellow}⚠[%?].%F{red}✘[%?]))%f%n@%m%# '
-	export RPROMPT=%~
+	# Show working directory in grey color.
+	export RPROMPT='%F{242}%~'
 }
