@@ -1,3 +1,6 @@
+" Markdown {{{1
+autocmd vimrc FileType markdown setlocal foldlevel=1
+
 " Rust {{{1
 autocmd vimrc FileType rust call init#filetype#rust#setup()
 
