@@ -20,17 +20,20 @@ function! init#plugopen#command(plugin, ...) abort
   endif
 
   if exists('l:help')
-    if has('nvim')
-      " Replace a help window if any.
-      for l:win in nvim_tabpage_list_wins(0)
-        if getbufvar(winbufnr(l:win), '&buftype') is# 'help'
-          call win_execute(l:win, 'setlocal buftype=') " This is needed for ftdetect to work.
-          call win_gotoid(l:win)
-          let l:opened = 1
-          break
-        endif
-      endfor
+    " Replace a help window if any.
+    if exists('*nvim_tabpage_list_wins')
+      let l:wins = nvim_tabpage_list_wins(0)
+    else
+      let l:wins = gettabinfo(tabpagenr())[0].windows
     endif
+    for l:win in l:wins
+      if getbufvar(winbufnr(l:win), '&buftype') is# 'help'
+        call win_execute(l:win, 'setlocal buftype=') " This is needed for ftdetect to work.
+        call win_gotoid(l:win)
+        let l:opened = 1
+        break
+      endif
+    endfor
     if !exists('l:opened')
       split
     endif
