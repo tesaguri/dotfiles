@@ -44,7 +44,7 @@ function! init#plugopen#command(plugin, ...) abort
 
   if exists('l:help')
     " Set `buftype` to `help` so that `:help` will replace the window.
-    " (|'buftype'| help text prohibits setting this manually, though)
+    " (|'buftype'| help text discourages setting this manually, though)
     setlocal buftype=help
   endif
 endfunction
