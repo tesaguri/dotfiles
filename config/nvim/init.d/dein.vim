@@ -38,12 +38,18 @@ if dein#min#load_state(s:base_path)
   endfor
 
   " Editor utilities {{{2
-  " Shows Git diffs as |signs|.
-  call dein#add('airblade/vim-gitgutter')
+  if ExecutableSuccess('git --version')
+    " Shows Git diffs as |signs|.
+    call dein#add('airblade/vim-gitgutter')
+    " Git wrapper that should be illegal.
+    call dein#add('tpope/vim-fugitive')
+  endif
   " Shows diff between the swap and on-disk files in |recovery|.
   call dein#add('chrisbra/Recover.vim')
-  " Key mappings for consistent navigation between Vim windows and tmux panes.
-  call dein#add('christoomey/vim-tmux-navigator')
+  if ExecutableSuccess('tmux -V')
+    " Key mappings for consistent navigation between Vim windows and tmux panes.
+    call dein#add('christoomey/vim-tmux-navigator')
+  endif
   " Reads EditorConfig and sets various options accordingly.
   call dein#add('editorconfig/editorconfig-vim', {
         \'hook_source': 'source ' . s:srcdir . '/editorconfig.vim',
@@ -52,8 +58,10 @@ if dein#min#load_state(s:base_path)
   " You need to either define `g:lightline` before `lightline` is sourced or call `lightline#init()`
   " after defining `g:lightline`.
   call dein#add('itchyny/lightline.vim', {'hook_source': 'source ' . s:srcdir . '/lightline.vim'})
-  " Transparent editing of GPG encrypted files.
-  call dein#add('jamessan/vim-gnupg', {'hook_source': 'source ' . s:srcdir . '/gnupg.vim'})
+  if ExecutableSuccess('gpg --version')
+    " Transparent editing of GPG encrypted files.
+    call dein#add('jamessan/vim-gnupg', {'hook_source': 'source ' . s:srcdir . '/gnupg.vim'})
+  endif
   " Git conflict marker manipulation.
   call dein#add('rhysd/conflict-marker.vim')
   " Filesystem browser.
@@ -68,8 +76,6 @@ if dein#min#load_state(s:base_path)
   call dein#add('tommcdo/vim-exchange')
   " Key mappings for commenting out and uncommenting.
   call dein#add('tomtom/tcomment_vim')
-  " Git wrapper that should be illegal.
-  call dein#add('tpope/vim-fugitive')
   " Framework to allow plugin mappings to be repeated by the `.` command.
   call dein#add('tpope/vim-repeat')
   " |text-object| like key mappings for editing "surroundings" (like pairs of parentheses).
@@ -97,7 +103,7 @@ if dein#min#load_state(s:base_path)
     " suitable for merging. Also, `fzf.vim` and `fzf` have `plugin/fzf.vim` and merging both would
     " result in a conflict.
     call dein#add('/usr/local/opt/fzf', {'merged': 0})
-  elseif executable('fzf')
+  elseif ExecutableSuccess('fzf --version')
     call dein#add('junegunn/fzf', {'merged': 0})
   endif
   call dein#add('junegunn/fzf.vim')
