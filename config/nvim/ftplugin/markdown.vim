@@ -50,7 +50,7 @@ function! MarkdownFold() abort
     return ">1"
   endif
 
-  if (line =~ '^.\+$') && (nextline =~ '^-\+$') && s:NotCodeBlock(v:lnum + 1)
+  if (line =~ '^.\+$') && (nextline =~ '^-\+$') && s:NotCodeBlock(v:lnum + 1) && synIDattr(synID(v:lnum + 1)) !=# 'yamlDocumentStart'
     return ">2"
   endif
 
