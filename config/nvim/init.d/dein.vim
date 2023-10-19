@@ -23,7 +23,7 @@ if dein#min#load_state(s:base_path)
   " Despite the plugin's name, Lua Reference Manual is useful outside Neovim too.
   call dein#add('milisims/nvim-luaref')
   " Syntax and key mappings for Markdown.
-  call dein#add('preservim/vim-markdown')
+  call dein#add('preservim/vim-markdown', {'hook_source': 'source ' . s:srcdir . '/markdown.vim'})
   " Syntax and ftplugin for Rust, the best systems programming language ever.
   call dein#add('rust-lang/rust.vim', {'lazy': 1, 'on_ft': 'rust'})
   " Syntax for Dhall, a programmable configuration language.
