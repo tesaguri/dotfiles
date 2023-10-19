@@ -42,7 +42,7 @@ if dein#min#load_state(s:base_path)
     " Shows Git diffs as |signs|.
     call dein#add('airblade/vim-gitgutter')
     " Git wrapper that should be illegal.
-    call dein#add('tpope/vim-fugitive')
+    call dein#add('tpope/vim-fugitive', {'hook_source': 'source ' .s:srcdir . '/fugitive.vim'})
   endif
   " Shows diff between the swap and on-disk files in |recovery|.
   call dein#add('chrisbra/Recover.vim')
