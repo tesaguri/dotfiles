@@ -162,13 +162,11 @@ if dein#min#load_state(s:base_path)
 endif
 call dein#call_hook('source')
 
-" Regenerate the runtimepath after this file is modified (and possibly plugin configs are changed).
+" Install new packages when this file is modified.
 execute 'autocmd vimrc BufWritePost ' . resolve(expand('<sfile>')) . ' ++once'
   \ . ' source ' . expand('<sfile>')
   \ . ' | if dein#check_install()'
   \ . ' | call dein#install()'
-  \ . ' | else'
-  \ . ' | call dein#recache_runtimepath()'
   \ . ' | endif'
 
 if has('vim_starting')
