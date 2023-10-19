@@ -6,7 +6,6 @@ if !has('nvim')
   let &background = 'dark'
   let &encoding = 'utf-8'
   let &hlsearch = 1
-  let &incsearch = 1
   let &smarttab = 1
   let &ttyfast = 1
 endif
