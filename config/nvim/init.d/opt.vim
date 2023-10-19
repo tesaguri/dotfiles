@@ -5,7 +5,10 @@ if !has('nvim')
   " Vim does not seem to detect background color of my Alacritty correctly.
   let &background = 'dark'
   let &encoding = 'utf-8'
-  let &hlsearch = 1
+  if has('extra_search')
+    let &hlsearch = 1
+  endif
+  let &laststatus = 2
   let &smarttab = 1
   let &ttyfast = 1
 endif
@@ -13,9 +16,13 @@ endif
 " Interface {{{1
 set clipboard+=unnamedplus
 let &mouse = 'a'
+if has('patch-8.2.4325')
+  set wildoptions+=pum
+endif
 
 " Appearance {{{1
 set colorcolumn+=101
+let &display = 'lastline'
 let &number = 1
 let &relativenumber = 1
 let &termguicolors = 1
