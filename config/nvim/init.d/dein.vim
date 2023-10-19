@@ -175,8 +175,9 @@ if has('vim_starting')
 endif
 
 if !has('nvim')
-  filetype plugin indent on
-  syntax enable
+  " Although |defaults.vim| executes `:filetype on`, |dein#begin()| executes `:filetype off`.
+  " Dein resets back the options only on Neovim (|dein-compatibility|, 2022.12.06).
+  filetype on
 endif
 
 " vim: fdm=marker
