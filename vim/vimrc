@@ -1,15 +1,15 @@
-" Basic setup for Vim {{{1
-" Vim is already older than I am. Why should I care compatibility with even older Vi?
-" Also, I don't care about POSIX-compliance of an interactive interface like Vi(m). Indeed,
-" compatibility matters for plugins, but few, if any, people writes plugins for (POSIX-)Vi nowadays.
-" vint: next-line -ProhibitSetNoCompatible " This is the very first code line of vimrc.
-if &compatible | set nocompatible | endif
+" Load |defaults.vim| which provides a generally reasonable default setup.
+source $VIMRUNTIME/defaults.vim
 
-" Skip loading in tiny and small versions of Vim.
-if !1 | finish | endif
+" Execute only when |+eval| feature is available (|no-eval-feature|).
+if 1
+  " Revert some settings from |defaults.vim|.
+  " I don't like highlighting things inside regular comments.
+  unlet c_comment_strings
+  " This is not the first time I discovered the command-line window and I know what it is, thanks!
+  augroup vimHints
+    autocmd!
+  augroup END
 
-" }}}
-
-source <sfile>:h/init.vim
-
-" vim: fdm=marker
+  source <sfile>:h/init.vim
+endif
