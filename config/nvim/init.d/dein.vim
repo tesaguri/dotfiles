@@ -50,6 +50,8 @@ if dein#min#load_state(s:base_path)
     " Key mappings for consistent navigation between Vim windows and tmux panes.
     call dein#add('christoomey/vim-tmux-navigator')
   endif
+  " Runs various linters and sets |signs| asynchronously.
+  call dein#add('dense-analysis/ale')
   " Reads EditorConfig and sets various options accordingly.
   call dein#add('editorconfig/editorconfig-vim', {
         \'hook_source': 'source ' . s:srcdir . '/editorconfig.vim',
@@ -80,8 +82,6 @@ if dein#min#load_state(s:base_path)
   call dein#add('tpope/vim-repeat')
   " |text-object| like key mappings for editing "surroundings" (like pairs of parentheses).
   call dein#add('tpope/vim-surround')
-  " Runs various linters and sets |signs| asynchronously.
-  call dein#add('w0rp/ale')
 
   " I like matchit plugin but I don't like the way Neovim adds it to runtimepath by default nor the
   " editor's recommended way of disabling it (i.e. `:let loaded_matchit = 1` in vimrc, which is not
