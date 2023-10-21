@@ -89,6 +89,10 @@ let g:lightline = {
       \['cwd'],
       \],
     \},
+  \'tabline': {
+    \'left': [['tabs']],
+    \'right': [],
+    \},
   \'component': {
     \'relativepath': '%f%{dein#is_sourced("trust.vim") ? (trust#path#is_allowed(expand("%")) ? " ✔" : " ✘") : ""}',
     \},
