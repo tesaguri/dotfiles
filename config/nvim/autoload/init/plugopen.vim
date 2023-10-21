@@ -26,6 +26,7 @@ function! init#plugopen#command(plugin, ...) abort
     else
       let l:wins = gettabinfo(tabpagenr())[0].windows
     endif
+    let l:wins = [winnr()] + l:wins " Prefer the current window.
     for l:win in l:wins
       if getbufvar(winbufnr(l:win), '&buftype') is# 'help'
         call win_execute(l:win, 'setlocal buftype=') " This is needed for ftdetect to work.
