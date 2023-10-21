@@ -1,0 +1,12 @@
+--concurrent-fragments=5
+--embed-subs
+--sub-langs='all,-live_chat'
+--embed-thumbnail
+--live-from-start
+--no-skip-unavailable-fragments
+--prefer-free-formats
+--compat-options=filename
+--retry-sleep='exp=1:10'
+
+--alias smallest '--format-sort="+size,+br,+res,+fps"'
+--alias best-audio '--format="bestaudio*+bestvideo/best" --format-sort="acodec,abr,asr,+size,+vbr,+res,+fps" --format-sort-force'
