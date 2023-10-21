@@ -29,7 +29,7 @@ function! init#plugopen#command(plugin, ...) abort
     let l:wins = [winnr()] + l:wins " Prefer the current window.
     for l:win in l:wins
       if getbufvar(winbufnr(l:win), '&buftype') is# 'help'
-        call win_execute(l:win, 'setlocal buftype=') " This is needed for ftdetect to work.
+        call win_execute(l:win, 'set buftype=') " This is needed for ftdetect to work.
         call win_gotoid(l:win)
         let l:opened = 1
         break
@@ -40,14 +40,9 @@ function! init#plugopen#command(plugin, ...) abort
     endif
   endif
 
-  execute 'edit ' . fnameescape(l:file)
-  setlocal nomodifiable readonly
-
-  if exists('l:help')
-    " Set `buftype` to `help` so that `:help` will replace the window.
-    " (|'buftype'| help text discourages setting this manually, though)
-    setlocal buftype=help
-  endif
+  execute 'edit '
+    \ . '+set\ nomodifiable\ readonly\ buftype=' . (exists('l:help') ? 'help ' : ' ')
+    \ . fnameescape(l:file)
 endfunction
 
 function! init#plugopen#complete(lead, line, pos) abort
