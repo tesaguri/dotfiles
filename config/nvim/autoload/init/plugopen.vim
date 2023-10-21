@@ -40,9 +40,9 @@ function! init#plugopen#command(plugin, ...) abort
     endif
   endif
 
-  execute 'edit '
-    \ . '+set\ nomodifiable\ readonly\ buftype=' . (exists('l:help') ? 'help ' : ' ')
-    \ . fnameescape(l:file)
+  execute 'edit'
+    \ '+set\ nomodifiable\ readonly\ buftype=' . (exists('l:help') ? 'help' : '')
+    \ fnameescape(l:file)
 endfunction
 
 function! init#plugopen#complete(lead, line, pos) abort

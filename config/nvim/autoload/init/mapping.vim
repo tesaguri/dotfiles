@@ -9,7 +9,7 @@ function! init#mapping#move(count, map) abort
 endfunction
 
 function! init#mapping#visual_move(count, map) abort
-  execute ":'<,'>m " . (a:count >= 0 ? "'>+" . a:count : "'<" . (a:count - 1))
+  execute ":'<,'>m" (a:count >= 0 ? "'>+" . a:count : "'<" . (a:count - 1))
   normal gv
   " vint: next-line -ProhibitCommandRelyOnUser
   normal =

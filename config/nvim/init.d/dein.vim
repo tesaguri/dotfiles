@@ -154,14 +154,15 @@ if dein#min#load_state(s:base_path)
   call dein#end()
   call dein#save_state()
 endif
+
 call dein#call_hook('source')
 
 " Install new packages when this file is modified.
-execute 'autocmd vimrc BufWritePost ' . fnameescape(resolve(expand('<sfile>'))) . ' ++once'
-  \ . ' source ' . fnameescape(expand('<sfile>'))
-  \ . ' | if dein#check_install()'
-  \ . ' | call dein#install()'
-  \ . ' | endif'
+execute 'autocmd vimrc BufWritePost' fnameescape(resolve(expand('<sfile>'))) '++once'
+  \ 'source' fnameescape(expand('<sfile>'))
+  \ '| if dein#check_install()'
+  \ '| call dein#install()'
+  \ '| endif'
 
 if has('vim_starting')
   " See `:help dein-options-hook_post_source`.
