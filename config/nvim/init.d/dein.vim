@@ -130,7 +130,7 @@ if dein#min#load_state(s:base_path)
 
     " LSP clients {{{3
     " Collection of configurations for Neovim's built-in LSP client.
-    call dein#add('neovim/nvim-lspconfig', {'lazy': 1, 'on_ft': ['dhall', 'lua', 'rust']})
+    call dein#add('neovim/nvim-lspconfig', {'lazy': 1, 'on_ft': ['dhall', 'elm', 'lua', 'python', 'rust']})
     " Extra tools for `rust-analyzer` LSP client.
     call dein#add('simrat39/rust-tools.nvim', {
           \'depends': 'nvim-lspconfig',

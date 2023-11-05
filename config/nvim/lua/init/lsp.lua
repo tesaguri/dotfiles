@@ -43,8 +43,10 @@ vim.call("dein#set_hook", "nvim-lspconfig", "hook_source", function()
   table.insert(lua_path, "lua/?/init.lua")
 
   local settings = {
-    ["dhall_lsp_server"] = {},
-    ["sumneko_lua"] = {
+    dhall_lsp_server = {},
+    elmls = {},
+    pyright = {},
+    sumneko_lua = {
       -- Reference: `:help lspconfig-server-configurations`
       Lua = {
         runtime = { version = "LuaJIT", path = lua_path },
