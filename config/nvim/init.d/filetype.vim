@@ -1,6 +1,14 @@
 " Markdown {{{1
 autocmd vimrc FileType markdown setlocal foldlevel=1
 
+" Shell {{{1
+" Use the literal tab character in shell scripts.
+autocmd vimrc FileType sh setlocal noexpandtab shiftwidth=0
+
+" Ruby {{{1
+" Don't try to align indentation in `foo = if bar ...` blocks.
+autocmd vimrc FileType ruby setlocal nosmartindent
+
 " Rust {{{1
 autocmd vimrc FileType rust call init#filetype#rust#setup()
 

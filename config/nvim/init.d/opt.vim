@@ -10,7 +10,6 @@ if !has('nvim')
   endif
   let &laststatus = 2
   let &smarttab = 1
-  let &ttyfast = 1
 endif
 
 " Interface {{{1
@@ -47,6 +46,11 @@ let &fileencodings = 'ucs-bom,utf-8,sjis,cp932,euc-jp,default,latin1'
 let &shiftwidth = 4
 let &smartindent = 1
 let &softtabstop = -1
+
+" Default plugins {{{1
+" sh.vim {{{2
+" I read |sh.vim| and still don't understand why it defaults to the ancient Bourne shell syntax.
+let g:is_posix = 1
 " }}}
 
 " vim: fdm=marker
