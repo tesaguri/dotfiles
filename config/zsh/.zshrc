@@ -1,6 +1,4 @@
-main() {
-	unset -f main
-
+function() {
 	local f=
 
 	for f in "$ZDOTDIR"/{.zshrc,zshrc.d/*.sh}; do
@@ -12,5 +10,3 @@ main() {
 		. "$f"
 	done
 }
-
-main "$@"

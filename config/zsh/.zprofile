@@ -1,6 +1,4 @@
-main() {
-	unset -f main
-
+function() {
 	local f=
 
 	if [ "$RCM_HOOK" -ne 1 ]; then
@@ -14,5 +12,3 @@ main() {
 		. "$f"
 	done
 }
-
-main "$@"
