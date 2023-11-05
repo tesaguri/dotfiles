@@ -82,6 +82,8 @@ if dein#min#load_state(s:base_path)
   call dein#add('tpope/vim-repeat')
   " |text-object| like key mappings for editing "surroundings" (like pairs of parentheses).
   call dein#add('tpope/vim-surround')
+  " Shows the "context" (like currently editing function and blocks) of the buffer content.
+  call dein#add('wellle/context.vim', {'hook_source': 'source ' . s:srcdir . '/context.vim'})
 
   " I like matchit plugin but I don't like the way Neovim adds it to runtimepath by default nor the
   " editor's recommended way of disabling it (i.e. `:let loaded_matchit = 1` in vimrc, which is not
