@@ -36,12 +36,13 @@ function! init#plugopen#command(plugin, ...) abort
       endif
     endfor
     if !exists('l:opened')
-      split
+      " FIXME: This inherits window-local options like 'conceallevel'.
+      execute "new +normal\\ \<C-W>K"
     endif
   endif
 
-  execute 'edit'
-    \ '+set\ nomodifiable\ readonly\ buftype=' . (exists('l:help') ? 'help' : '')
+  execute 'view'
+    \ '+set\ nomodifiable\ noswapfile\ buftype=' . (exists('l:help') ? 'help' : '')
     \ fnameescape(l:file)
 endfunction
 
