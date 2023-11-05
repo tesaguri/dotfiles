@@ -67,7 +67,7 @@ if dein#min#load_state(s:base_path)
   " Git conflict marker manipulation.
   call dein#add('rhysd/conflict-marker.vim')
   " Filesystem browser.
-  call dein#add('scrooloose/nerdtree')
+  call dein#add('scrooloose/nerdtree', {'hook_source': 'source ' . s:srcdir . '/nerdtree.vim'})
   " The package manager powering this very file.
   call dein#add('Shougo/dein.vim')
   " Adds `:AsyncRun` command to run shell commands asynchronously.
