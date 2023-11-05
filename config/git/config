@@ -6,9 +6,6 @@
 [github]
 	user = tesaguri
 
-[core]
-	pager = "if type delta > /dev/null 2>&1; then delta --color-only; else ${PAGER:-less}; fi"
-
 [init]
 	defaultBranch = main
 
