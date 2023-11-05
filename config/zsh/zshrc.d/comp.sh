@@ -1,4 +1,4 @@
-function() {
+function {
 	local zfunc="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/site-functions"
 	mkdir -p "$zfunc"
 	fpath+=("$zfunc")

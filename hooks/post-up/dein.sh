@@ -3,7 +3,7 @@
 # shellcheck disable=SC1090
 RCM_HOOK=1 . "$(dirname "$0")/../../config/zsh/.zprofile" "$@"
 
-function() {
+function {
 	local dein_repo
 	dein_repo="${XDG_DATA_HOME:-$HOME/.local/share}/dein/repos/github.com/Shougo/dein.vim"
 	if ! [ -d "$dein_repo" ]; then

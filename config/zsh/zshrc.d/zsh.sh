@@ -1,4 +1,4 @@
-function() {
+function {
 	if [ "$RCM_HOOK" = 1 ]; then
 		return
 	fi
