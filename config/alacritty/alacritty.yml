@@ -10,9 +10,8 @@ shell:
 
 key_bindings:
   - { key: F, mods: Command|Control, action: ToggleSimpleFullscreen }
-  # `C-L` is captured by `vim-tmux-navigator`'s setting.
-  # Unfortunately, `chars: "\x02:send-keys C-L\n"` would not work as intended.
-  - { key: K, mods: Command, action: None }
+  # Send `C-B C-L` instead of `C-L`, which is captured by `vim-tmux-navigator`'s setting.
+  - { key: K, mods: Command, chars: "\x02\x0c" }
 
   # Config for the JIS keyboard.
   - { key: Semicolon, mods: Shift|Command, action: IncreaseFontSize }
