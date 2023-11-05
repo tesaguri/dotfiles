@@ -12,7 +12,7 @@ vim.call("dein#set_hook", "nvim-lspconfig", "hook_source", function()
   local lspconfig = require("lspconfig")
 
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+  capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
   function M.on_attach(_client, bufnr)
     local function buf_map(mode, lhs, rhs, opts)
