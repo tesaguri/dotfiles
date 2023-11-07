@@ -6,9 +6,10 @@ if !has('nvim') && has('patch-8.0.1596')
 endif
 
 " `:move` lines up/down.
-nnoremap <silent> <M-J> :<C-U>call init#mapping#move(v:count1, "\<lt>M-J>")<CR>
-nnoremap <silent> <M-K> :<C-U>call init#mapping#move(-v:count1, "\<lt>M-K>")<CR>
-inoremap <silent> <M-J> <Esc>:call init#mapping#move(v:count1, "\<lt>M-J>")<CR>gi
-inoremap <silent> <M-K> <Esc>:call init#mapping#move(-v:count1, "\<lt>M-K>")<CR>gi
-vnoremap <silent> <M-J> :<C-U>call init#mapping#visual_move(v:count1, "\<lt>M-J>")<CR>
-vnoremap <silent> <M-K> :<C-U>call init#mapping#visual_move(-v:count1, "\<lt>M-K>")<CR>
+" The letter after |<M-| seems to be case-sensitive.
+nnoremap <silent> <M-j> :<C-U>call init#mapping#move(v:count1, "\<lt>M-j>")<CR>
+nnoremap <silent> <M-k> :<C-U>call init#mapping#move(-v:count1, "\<lt>M-k>")<CR>
+inoremap <silent> <M-j> <Esc>:call init#mapping#move(v:count1, "\<lt>M-j>")<CR>gi
+inoremap <silent> <M-k> <Esc>:call init#mapping#move(-v:count1, "\<lt>M-k>")<CR>gi
+vnoremap <silent> <M-j> :<C-U>call init#mapping#visual_move(v:count1, "\<lt>M-j>")<CR>
+vnoremap <silent> <M-k> :<C-U>call init#mapping#visual_move(-v:count1, "\<lt>M-k>")<CR>
