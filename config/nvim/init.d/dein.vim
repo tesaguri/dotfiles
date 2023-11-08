@@ -53,7 +53,7 @@ if dein#min#load_state(s:base_path)
     call dein#add('christoomey/vim-tmux-navigator')
   endif
   " Runs various linters and sets |signs| asynchronously.
-  call dein#add('dense-analysis/ale')
+  call dein#add('dense-analysis/ale', {'hook_source': 'source ' . s:srcdir . '/ale.vim'})
   " Reads EditorConfig and sets various options accordingly.
   call dein#add('editorconfig/editorconfig-vim', {
         \'hook_source': 'source ' . s:srcdir . '/editorconfig.vim',
