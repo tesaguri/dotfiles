@@ -1,4 +1,4 @@
-" Cherry-pick `:help nvim-defaults` {{{1
+" Cherry-pick |nvim-defaults| {{{1
 if !has('nvim')
   let &autoindent = 1
   let &autoread = 1
@@ -70,4 +70,4 @@ let &softtabstop = -1
 let g:is_posix = 1
 " }}}
 
-" vim: fdm=marker
+" vim: fdm=marker fdl=1

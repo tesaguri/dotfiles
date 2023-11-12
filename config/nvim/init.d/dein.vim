@@ -44,7 +44,7 @@ if dein#min#load_state(s:base_path)
     " Shows Git diffs as |signs|.
     call dein#add('airblade/vim-gitgutter')
     " Git wrapper that should be illegal.
-    call dein#add('tpope/vim-fugitive', {'hook_source': 'source ' .s:srcdir . '/fugitive.vim'})
+    call dein#add('tpope/vim-fugitive', {'hook_source': 'source ' . s:srcdir . '/fugitive.vim'})
   endif
   " Shows diff between the swap and on-disk files in |recovery|.
   call dein#add('chrisbra/Recover.vim')
@@ -54,7 +54,7 @@ if dein#min#load_state(s:base_path)
   endif
   " Runs various linters and sets |signs| asynchronously.
   call dein#add('dense-analysis/ale', {'hook_source': 'source ' . s:srcdir . '/ale.vim'})
-  " Reads EditorConfig and sets various options accordingly.
+  " Reads EditorConfig and sets various Vim options accordingly.
   call dein#add('editorconfig/editorconfig-vim', {
         \'hook_source': 'source ' . s:srcdir . '/editorconfig.vim',
         \})
@@ -82,7 +82,7 @@ if dein#min#load_state(s:base_path)
   call dein#add('tomtom/tcomment_vim')
   " Framework to allow plugin mappings to be repeated by the `.` command.
   call dein#add('tpope/vim-repeat')
-  " |text-object| like key mappings for editing "surroundings" (like pairs of parentheses).
+  " |text-object|-like key mappings for editing "surroundings" (like pairs of parentheses).
   call dein#add('tpope/vim-surround')
   " Shows the "context" (like currently editing function and blocks) of the buffer content.
   call dein#add('wellle/context.vim', {'hook_source': 'source ' . s:srcdir . '/context.vim'})
