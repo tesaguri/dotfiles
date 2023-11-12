@@ -12,6 +12,23 @@ if !has('nvim')
   let &smarttab = 1
 endif
 
+if has('nvim')
+  if exists('#vimStartup')
+    echomsg 'opt.vim: Overwriting an existing #vimStartup augroup.'
+    \ 'Unless you are re-sourcing `opt.vim` script, Neovim might have defined the augroup for you,'
+    \ 'in which case, check the script and consider updating it!'
+  endif
+  augroup vimStartup
+    autocmd!
+    " Jump to the cursor position the last session (|last-position-jump|).
+    " In Vim, an equivalent of this is defined in |defaults.vim| file, but Neovim doesn't have that.
+    autocmd BufRead * autocmd FileType <buffer> ++once
+    \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$")
+      \ | execute 'normal! g`"'
+    \ | endif
+  augroup END
+endif
+
 " Interface {{{1
 set clipboard+=unnamedplus
 if ExecutableSuccess('rg --version')
