@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # shellcheck disable=SC1090
-RCM_HOOK=1 . "$(dirname "$0")/../../config/zsh/.zprofile" "$@"
+. "$(dirname "$0")/../../config/zsh/.zprofile" "$@"
 
 function() {
 	local dein_repo

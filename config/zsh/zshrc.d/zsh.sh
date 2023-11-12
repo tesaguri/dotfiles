@@ -1,8 +1,4 @@
 function() {
-	if [ "$RCM_HOOK" = 1 ]; then
-		return
-	fi
-
 	export HISTFILE="${XDG_DATA_HOME:-${HOME}/.local/share}/zsh/history"
 	mkdir -p "$(dirname "$HISTFILE")"
 	export HISTSIZE=100000
