@@ -1,4 +1,3 @@
-if command -v rbenv >/dev/null; then
-	export RBENV_ROOT=/usr/local/var/rbenv
-	eval "$(rbenv init -)"
-fi
+RBENV_ROOT="$(whence -p rbenv)" &&
+export RBENV_ROOT="${RBENV_ROOT%/*/*}/var/rbenv" &&
+eval "$(rbenv init -)"
