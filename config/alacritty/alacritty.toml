@@ -1,0 +1,30 @@
+# Config docs: <https://github.com/alacritty/alacritty/blob/master/alacritty.yml>
+
+[window]
+opacity = 0.7
+option_as_alt = "Both"
+
+[shell]
+program = "/usr/local/bin/tmux"
+args = ["-l"]
+
+[[keyboard.bindings]]
+key = "F"
+mods = "Command|Control"
+action = "ToggleSimpleFullscreen"
+
+# Send `C-B C-L` instead of `C-L`, which is captured by `vim-tmux-navigator`'s setting.
+[[keyboard.bindings]]
+key = "K"
+mods = "Command"
+chars = "\u0002\f"
+
+# Config for the JIS keyboard.
+[[keyboard.bindings]]
+key = "+"
+mods = "Shift|Command"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "¥"
+chars = '\'
