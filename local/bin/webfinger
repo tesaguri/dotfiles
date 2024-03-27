@@ -1,0 +1,331 @@
+#!/bin/sh
+
+PROG="$0"
+
+if [ -z "$CURL" ] && type curl > /dev/null; then
+	CURL=curl
+fi
+
+if [ -z "$JQ" ] && type jq > /dev/null; then
+	JQ=jq
+fi
+
+msg() {
+	echo "$PROG: $1" >&2
+}
+
+usage() {
+	cat <<EOS >&2
+Usage: $PROG [OPTION...] RESOURCE [RESOURCE...]
+Get a JRD for RESOURCE via WebFinger.
+RESOURCE can be a URI or [@]USER@HOST.
+
+      --max-redirs=N
+                 set the maximum number of successive WebFinger requests to N+1
+                 in a --recursive resolution
+  -r, --[no-]recursive
+                 recursively resolve the subject of the returned JRD
+  -s, --[no-]subject
+                 print the subject of the JRD along with the original RESOURCE
+                 instead of the JRD, in the format of RESOURCE\tSUBJECT
+  -v, --[no-]verbose
+                 enable verbose output when making HTTP requests
+EOS
+}
+
+optarg() {
+	local opt="${1#--}"
+	local name="$(printf '%s' "${opt%%=*}" | tr '[:lower:]-' '[:upper:]_')"
+	case "$opt" in
+		*=*)
+			local value="${opt#*=}"
+			eval "$name=\"\$value\""
+			;;
+		*)
+			if [ $# -ge 2 ]; then
+				eval "$name=\"\$2\""
+			else
+				msg "option \`$1' requires an argument"
+				return 1
+			fi
+			;;
+	esac
+}
+
+optshift() {
+	case "$1" in
+		*=*)
+			echo 1
+			;;
+		*)
+			echo 2
+			;;
+	esac
+}
+
+optflag() {
+	local name="${1#--}"
+	name="$(printf '%s' "${name#no-}" | tr '[:lower:]-' '[:upper:]_')"
+	case "$1" in
+		--no-*)
+			unset "$name"
+			;;
+		*)
+			eval "$name=1"
+			;;
+	esac
+}
+
+# Invoke $1 with "${@:2}", but skips any arguments after an option argument
+xposargs() {
+	local command="$1"
+	shift
+
+	local arg reached_opt double_dash
+	for arg in "$@"; do
+		shift
+		if [ -n "$double_dash" ]; then
+			set -- "$@" "$arg"
+		elif [ -z "$reached_opt" ]; then
+			case "$arg" in
+				-)
+					set -- "$@" -
+					;;
+				--)
+					double_dash=1
+					;;
+				-*)
+					reached_opt=1
+					;;
+				*)
+					set -- "$@" "$arg"
+					;;
+			esac
+		fi
+	done
+
+	$command "$@"
+}
+
+nposargs() {
+	local ret=0 double_dash
+	while [ $# -gt 0 ]; do
+		if [ -z "$double_dash" ]; then
+			case "$1" in
+				-)
+					;;
+				--)
+					double_dash=1
+					;;
+				-*)
+					echo "$ret"
+					return
+					;;
+			esac
+		fi
+		ret=$((ret + 1))
+		shift
+	done
+	echo "$ret"
+}
+
+query() {
+	if [ -z "$CURL" ]; then
+		msg 'command not found: curl'
+	fi
+
+	local arg
+	for arg in "$@"; do
+		shift
+		local host="$(printf '%s' "$arg" | sed -E 's/^[0-9A-Za-z+.-]+:(\/\/)?([^@\/]*@)?([^\/]*).*$/\3/')"
+		case "$host" in
+			*.onion|*.onion:*)
+				local scheme='http'
+				;;
+			*)
+				local scheme='https'
+				;;
+		esac
+		set -- "$@" "$scheme://$host/.well-known/webfinger?resource=$arg"
+	done
+
+	$CURL -qfLSs"${VERBOSE:+v}" \
+		--header 'Accept: application/jrd+json' \
+		--compressed \
+		--max-redirs 20 \
+		"$@"
+}
+
+resolve() {
+	# Transform non-URI arguments to `acct:` URIs.
+	local arg
+	for arg in "$@"; do
+		shift
+		if printf '%s' "$arg" | grep -Eiq '^[0-9A-Z]+:'; then
+			set -- "$@" "$arg"
+		else
+			set -- "$@" "acct:${arg#@}"
+		fi
+	done
+
+	if [ -z "$RECURSIVE" ]; then
+		if [ -z "$SUBJECT" ]; then
+			# No need to process the returned JRDs with `jq`
+			query "$@"
+			return $?
+		fi
+		local MAX_REDIRS=0
+	fi
+
+	local status
+
+	local resource
+	for resource in "$@"; do
+		if [ -n "$SUBJECT" ]; then
+			printf '%s\t' "$resource"
+		fi
+		local attempts=$((MAX_REDIRS + 1))
+		while [ "$attempts" -gt 0 ]; do
+			local jrd subject
+			jrd="$(query "$resource")" || { status=$?; continue 2; }
+			subject="$($JQ -nr --argjson jrd "$jrd" '
+if $jrd | type != "object" then
+	error("invalid type: " + ($jrd | type))
+elif $jrd.subject | type == "string" then
+	$jrd.subject
+elif $jrd.subject == null then
+	empty
+else
+	error("subject: invalid type: " + ($jrd.subject | type))
+end')" || { status=$?; continue 2; }
+			if [ -z "$subject" ] || [ "$subject" = "$resource" ]; then
+				# $resource is the canonical subject
+				if [ -n "$SUBJECT" ]; then
+					printf '%s\n' "$resource"
+				else
+					printf '%s\n' "$jrd"
+				fi
+				continue 2
+			fi
+			resource="$subject"
+			attempts=$((attempts - 1))
+		done
+
+		if [ -n "$RECURSIVE" ]; then
+			msg 'Number of JRD redirects hit maximum amount'
+			status=1
+		fi
+	done
+
+	return $status
+}
+
+validate_args() {
+	local has_resources
+
+	while [ $# -gt 0 ]; do
+		case "$1" in
+			--help)
+				usage
+				exit
+				;;
+			--max-redirs|--max-redirs=*)
+				optarg "$@" || return $?
+				shift "$(optshift "$1")"
+				;;
+			--recursive|--subject)
+				if [ -z "$JQ" ]; then
+					msg "$1 requires jq"
+					return 1
+				fi
+				shift
+				;;
+			--no-recursive|--no-subject|--verbose|--no-verbose)
+				shift
+				;;
+			--)
+				if [ $# -eq 1 ] && [ -z "$has_resources" ]; then
+					usage
+					return 1
+				fi
+				return
+				;;
+			--*)
+				msg "unrecognized option '$1'"
+				usage
+				return 1
+				;;
+			-*)
+				local opt
+				while getopts ':rsv' opt "$1"; do
+					if [ "$opt" = '?' ]; then
+						msg "invalid option -- $opt"
+						usage
+						return 1
+					fi
+				done
+				shift
+				;;
+			*)
+				has_resources=1
+				shift
+				;;
+		esac
+	done
+
+	if [ -z "$has_resources" ]; then
+		usage
+		return 1
+	fi
+}
+
+main() {
+	validate_args "$@" || return $?
+
+	MAX_REDIRS=1
+	unset SUBJECT VERBOSE
+
+	local status
+	while [ $# -gt 0 ]; do
+		case "$1" in
+			--max-redirs*)
+				optarg "$@" || return $?
+				shift "$(optshift "$1")"
+				;;
+			--)
+				shift
+				resolve "$@" || status=$?
+				break
+				;;
+			--*)
+				optflag "$1"
+				shift
+				;;
+			-*)
+				local opt
+				while getopts 'rsv' opt "$1"; do
+					case "$opt" in
+						r)
+							RECURSIVE=1
+							;;
+						s)
+							SUBJECT=1
+							;;
+						v)
+							VERBOSE=1
+							;;
+					esac
+				done
+				shift $((OPTIND - 1))
+				;;
+			*)
+				xposargs resolve "$@" || status=$?
+				shift "$(nposargs "$@")"
+				;;
+		esac
+	done
+
+	return $status
+}
+
+main "$@"
