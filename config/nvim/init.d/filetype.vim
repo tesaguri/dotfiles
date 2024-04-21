@@ -36,6 +36,7 @@ autocmd vimrc FileType sh setlocal
 " Vim script {{{1
 " Revert the setting of the built-in ftplugin.
 autocmd vimrc BufWinEnter *.vim,vimrc if &textwidth is# 78 | setlocal textwidth=0 | endif
-" }}}
+
+" }}}1
 
 " vim: foldmethod=marker foldlevel=1

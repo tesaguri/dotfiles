@@ -71,6 +71,7 @@ let g:vim_json_conceal = 0
 " sh.vim {{{2
 " I read |sh.vim| and still don't understand why it defaults to the ancient Bourne shell syntax.
 let g:is_posix = 1
-" }}}
+
+" }}}1
 
 " vim: fdm=marker fdl=1

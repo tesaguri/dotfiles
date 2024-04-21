@@ -179,4 +179,6 @@ if !has('nvim')
   filetype on
 endif
 
+" }}}1
+
 " vim: fdm=marker
