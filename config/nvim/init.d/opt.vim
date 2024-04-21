@@ -65,6 +65,9 @@ let &smartindent = 1
 let &softtabstop = -1
 
 " Default plugins {{{1
+" json.vim {{{2
+let g:vim_json_conceal = 0
+
 " sh.vim {{{2
 " I read |sh.vim| and still don't understand why it defaults to the ancient Bourne shell syntax.
 let g:is_posix = 1
