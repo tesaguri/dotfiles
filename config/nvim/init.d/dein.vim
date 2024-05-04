@@ -11,6 +11,8 @@ execute 'set runtimepath+=' . SetEscape(s:dein_path)
 
 let s:srcdir = expand('<sfile>:h') . '/dein'
 
+let g:dein#types#git#pull_command = 'pull --ff --ff-only origin HEAD'
+
 if dein#min#load_state(s:base_path)
   call dein#begin(s:base_path)
 
