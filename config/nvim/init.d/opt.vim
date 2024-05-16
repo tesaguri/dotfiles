@@ -45,7 +45,9 @@ set colorcolumn+=101
 let &display = 'lastline'
 let &number = 1
 let &relativenumber = 1
-let &termguicolors = 1
+if !has('nvim-0.10') " Let Neovim automatically detect 24-bit color support if possible.
+  let &termguicolors = 1
+endif
 if exists('+winblend')
   let &winblend = 30
 endif

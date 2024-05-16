@@ -3,12 +3,10 @@
 -- auto-generated) and are likely to benefit from tree-sitter the most.
 local langs = { "bash", "html", "javascript", "json", "xml" }
 
-require("nvim-treesitter.parsers").list.xml = {
-  install_info = {
-    url = "https://github.com/unhammer/tree-sitter-xml",
-    files = { "src/parser.c" },
-  },
-}
+-- Exclude parsers bundled with the Neovim installation.
+local parsers = vim.call('glob', os.getenv('VIMRUNTIME') .. '/../../../lib/nvim/parser/*.so', 1, 1)
+local bundled_langs = vim.tbl_map(function(p) return vim.call('fnamemodify', p, ':t:r') end, parsers)
+langs = vim.tbl_filter(function(l) return not vim.tbl_contains(bundled_langs, l) end, langs)
 
 require("nvim-treesitter.configs").setup {
   ensure_installed = langs,

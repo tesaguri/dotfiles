@@ -21,9 +21,11 @@ if dein#min#load_state(s:base_path)
   " Lua syntax that aims at being better than built-in one.
   " Specifically, it highlights EmmyLua annotations nicely.
   call dein#add('euclidianAce/BetterLua.vim')
-  " Adds the Lua 5.1 Reference Manual to `:help`.
-  " Despite the plugin's name, Lua Reference Manual is useful outside Neovim too.
-  call dein#add('milisims/nvim-luaref')
+  if empty(findfile('doc/luaref.txt', $VIMRUNTIME))
+    " Adds the Lua 5.1 Reference Manual to `:help`.
+    " Despite the plugin's name, Lua Reference Manual is useful outside Neovim too.
+    call dein#add('milisims/nvim-luaref')
+  endif
   " Syntax and key mappings for Markdown.
   call dein#add('preservim/vim-markdown', {'hook_source': 'source ' . s:srcdir . '/markdown.vim'})
   " Syntax for SATySFi, a statically-typed typesetting language.
@@ -56,10 +58,12 @@ if dein#min#load_state(s:base_path)
   endif
   " Runs various linters and sets |signs| asynchronously.
   call dein#add('dense-analysis/ale', {'hook_source': 'source ' . s:srcdir . '/ale.vim'})
-  " Reads EditorConfig and sets various Vim options accordingly.
-  call dein#add('editorconfig/editorconfig-vim', {
-        \'hook_source': 'source ' . s:srcdir . '/editorconfig.vim',
-        \})
+  if empty(findfile('plugin/editorconfig.lua', $VIMRUNTIME))
+    " Reads EditorConfig and sets various Vim options accordingly.
+    call dein#add('editorconfig/editorconfig-vim', {
+          \'hook_source': 'source ' . s:srcdir . '/editorconfig.vim',
+          \})
+  endif
   " `statusline` and `tabline` manager.
   " You need to either define `g:lightline` before `lightline` is sourced or call `lightline#init()`
   " after defining `g:lightline`.
@@ -80,8 +84,10 @@ if dein#min#load_state(s:base_path)
   call dein#add('tesaguri/trust.vim', {'hook_post_source': 'source ' . s:srcdir . '/trust.vim'})
   " Key mappings for exchanging a pair of texts.
   call dein#add('tommcdo/vim-exchange')
-  " Key mappings for commenting out and uncommenting.
-  call dein#add('tomtom/tcomment_vim')
+  if !has('nvim-0.10') " Prefer native |commenting| support if available.
+    " Key mappings for commenting out and uncommenting.
+    call dein#add('tomtom/tcomment_vim')
+  endif
   " Framework to allow plugin mappings to be repeated by the `.` command.
   call dein#add('tpope/vim-repeat')
   " |text-object|-like key mappings for editing "surroundings" (like pairs of parentheses).
@@ -119,10 +125,12 @@ if dein#min#load_state(s:base_path)
   " Don't be too afraid of adding plugins here.
   " I only use Vim in limited situations like through SSH and don't demand fancy things from it.
   if has('nvim')
-    " Language support {{{3
-    " An introduction `:help` text to Neovim's Lua interface.
-    " Unlike `nvim-luaref`, this is specific to Neovim and does not make much sense outside it.
-    call dein#add('nanotee/nvim-lua-guide')
+    if empty(findfile('doc/lua-guide.txt', $VIMRUNTIME))
+      " Language support {{{3
+      " An introduction `:help` text to Neovim's Lua interface.
+      " Unlike `nvim-luaref`, this is specific to Neovim and does not make much sense outside it.
+      call dein#add('nanotee/nvim-lua-guide')
+    endif
     " Installs and configures various tree-sitter parsers.
     " The plugin installs parsers to its runtimepath and if it were merged, the parsers would be
     " overwritten by `dein#recache_runtimepath()`.
