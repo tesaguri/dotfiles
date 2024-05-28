@@ -21,7 +21,7 @@ if filereadable(s:conf)
 endif
 
 if exists('s:default_recipient')
-  if type('s:default_recipient') is# v:t_string
+  if type(s:default_recipient) is# v:t_string
     let g:GPGDefaultRecipients = [s:default_recipient]
   elseif exists('s:default_key')
     let g:GPGDefaultRecipients = [s:default_key]
