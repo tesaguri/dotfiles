@@ -1,5 +1,5 @@
 function() {
-	export HISTFILE="${XDG_DATA_HOME:-${HOME}/.local/share}/zsh/history"
+	export HISTFILE="${XDG_STATE_HOME:-${HOME}/.local/state}/zsh/history"
 	mkdir -p "$(dirname "$HISTFILE")"
 	export HISTSIZE=100000
 	export SAVEHIST=10000000

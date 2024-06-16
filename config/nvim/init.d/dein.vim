@@ -2,9 +2,10 @@
 
 " Prelude {{{1
 let s:base_path = (empty($XDG_DATA_HOME) ? expand('~/.local/share') : $XDG_DATA_HOME) . '/dein'
-let g:dein#cache_directory = (empty($XDG_CACHE_HOME)
-  \ ? expand('~/.cache')
-  \ : $XDG_CACHE_HOME) . '/dein'
+" Use the state home rather than the cache home because it needs to persist between restarts.
+let g:dein#cache_directory = (empty($XDG_STATE_HOME)
+  \ ? expand('~/.local/state')
+  \ : $XDG_STATE_HOME) . '/dein'
 
 let s:dein_path = s:base_path . '/repos/github.com/Shougo/dein.vim'
 execute 'set runtimepath+=' . SetEscape(s:dein_path)
