@@ -1,0 +1,38 @@
+#!/bin/sh
+
+dig2at() {
+	for q in "$@"; do
+		shift
+		set -- "$@" "_atproto.$q"
+	done
+	dig +noall +answer TXT "$@" | sed -E 's/^_atproto\.([^[:space:]]*)\.[[:space:]][^[:space:]]*[[:space:]]IN[[:space:]]TXT[[:space:]]"did=([^"]*)".*$/\1\t\2/'
+}
+
+wellknown() {
+	printf '%s\t' "$1"
+	# shellcheck disable=SC2005 # The `echo` ensures that the output ends with a line feed
+	echo "$(curl -qfLs --compressed "https://$1/.well-known/atproto-did")"
+}
+
+main() {
+	resolved="$(dig2at "$@")"
+	printf '%s' "$resolved" | {
+		read -r r
+		for q in "$@"; do
+			shift
+			case "$r" in
+			"$q$(printf '\t')"*)
+				echo "$r"
+				read -r r
+				;;
+			*)
+				wellknown "$q" || status=$?
+				;;
+			esac
+		done
+		# shellcheck disable=SC2086 # $status can be empty and `return ""` would raise error
+		return $status
+	}
+}
+
+main "$@"
