@@ -2,11 +2,11 @@
 
 PROG="$0"
 
-if [ -z "$CURL" ] && type curl > /dev/null; then
+if [ -z "$CURL" ] && type curl >/dev/null; then
 	CURL=curl
 fi
 
-if [ -z "$JQ" ] && type jq > /dev/null; then
+if [ -z "$JQ" ] && type jq >/dev/null; then
 	JQ=jq
 fi
 
@@ -15,51 +15,48 @@ msg() {
 }
 
 usage() {
-	cat <<EOS >&2
-Usage: $PROG [OPTION...] RESOURCE [RESOURCE...]
-Get a JRD for RESOURCE via WebFinger.
-RESOURCE can be a URI or [@]USER@HOST.
-
-      --max-redirs=N
-                 set the maximum number of successive WebFinger requests to N+1
-                 in a --recursive resolution
-  -r, --[no-]recursive
-                 recursively resolve the subject of the returned JRD
-  -s, --[no-]subject
-                 print the subject of the JRD along with the original RESOURCE
-                 instead of the JRD, in the format of RESOURCE\tSUBJECT
-  -v, --[no-]verbose
-                 enable verbose output when making HTTP requests
-EOS
+	echo "Usage: $PROG [OPTION...] RESOURCE [RESOURCE...]"
+	echo 'Get a JRD for RESOURCE via WebFinger.'
+	echo 'RESOURCE can be a URI or [@]USER@HOST.'
+	echo ''
+	echo '      --max-redirs=N'
+	echo '                 set the maximum number of successive WebFinger requests to N+1'
+	echo '                 in a --recursive resolution'
+	echo '  -r, --[no-]recursive'
+	echo '                 recursively resolve the subject of the returned JRD'
+	echo '  -s, --[no-]subject'
+	echo '                 print the subject of the JRD along with the original RESOURCE'
+	printf '                 instead of the JRD, in the format of RESOURCE\tSUBJECT\n'
+	echo '  -v, --[no-]verbose'
+	echo '                 enable verbose output when making HTTP requests'
 }
 
 optarg() {
 	local opt="${1#--}"
-	local name="$(printf '%s' "${opt%%=*}" | tr '[:lower:]-' '[:upper:]_')"
+	local name
+	name="$(printf '%s' "${opt%%=*}" | tr '[:lower:]-' '[:upper:]_')" || exit 1
 	case "$opt" in
-		*=*)
-			local value="${opt#*=}"
-			eval "$name=\"\$value\""
-			;;
-		*)
-			if [ $# -ge 2 ]; then
-				eval "$name=\"\$2\""
-			else
-				msg "option \`$1' requires an argument"
-				return 1
-			fi
-			;;
+	*=*)
+		# shellcheck disable=SC2034 # $value is used in `eval`
+		local value="${opt#*=}"
+		eval "$name=\"\$value\""
+		;;
+	*)
+		if [ $# -ge 2 ]; then
+			eval "$name=\"\$2\""
+		else
+			msg "option '$1' requires an argument" >&2
+			usage >&2
+			exit 1
+		fi
+		;;
 	esac
 }
 
 optshift() {
 	case "$1" in
-		*=*)
-			echo 1
-			;;
-		*)
-			echo 2
-			;;
+	*=*) echo 1 ;;
+	*) echo 2 ;;
 	esac
 }
 
@@ -67,16 +64,12 @@ optflag() {
 	local name="${1#--}"
 	name="$(printf '%s' "${name#no-}" | tr '[:lower:]-' '[:upper:]_')"
 	case "$1" in
-		--no-*)
-			unset "$name"
-			;;
-		*)
-			eval "$name=1"
-			;;
+	--no-*) unset "$name" ;;
+	*) eval "$name=1" ;;
 	esac
 }
 
-# Invoke $1 with "${@:2}", but skips any arguments after an option argument
+# Invokes $1 with "${@:2}", but skips any arguments after the first option argument, if any.
 xposargs() {
 	local command="$1"
 	shift
@@ -88,18 +81,18 @@ xposargs() {
 			set -- "$@" "$arg"
 		elif [ -z "$reached_opt" ]; then
 			case "$arg" in
-				-)
-					set -- "$@" -
-					;;
-				--)
-					double_dash=1
-					;;
-				-*)
-					reached_opt=1
-					;;
-				*)
-					set -- "$@" "$arg"
-					;;
+			-)
+				set -- "$@" -
+				;;
+			--)
+				double_dash=1
+				;;
+			-*)
+				break
+				;;
+			*)
+				set -- "$@" "$arg"
+				;;
 			esac
 		fi
 	done
@@ -108,21 +101,19 @@ xposargs() {
 }
 
 nposargs() {
-	local ret=0 double_dash
+	local ret=0
 	while [ $# -gt 0 ]; do
-		if [ -z "$double_dash" ]; then
-			case "$1" in
-				-)
-					;;
-				--)
-					double_dash=1
-					;;
-				-*)
-					echo "$ret"
-					return
-					;;
-			esac
-		fi
+		case "$1" in
+		-) ;;
+		--)
+			echo $((ret + $#))
+			return
+			;;
+		-*)
+			echo "$ret"
+			return
+			;;
+		esac
 		ret=$((ret + 1))
 		shift
 	done
@@ -132,24 +123,30 @@ nposargs() {
 query() {
 	if [ -z "$CURL" ]; then
 		msg 'command not found: curl'
+		return 127
 	fi
 
 	local arg
 	for arg in "$@"; do
 		shift
-		local host="$(printf '%s' "$arg" | sed -E 's/^[0-9A-Za-z+.-]+:(\/\/)?([^@\/]*@)?([^\/]*).*$/\3/')"
+		local host
+		host="$(printf '%s' "$arg" | sed -E 's/^[0-9A-Za-z+.-]+:(\/\/)?([^@\/]*@)?([^\/]*).*$/\3/')"
 		case "$host" in
-			*.onion|*.onion:*)
-				local scheme='http'
-				;;
-			*)
-				local scheme='https'
-				;;
+		# Although WebFinger spec mandates the use of the HTTPS scheme, TLS is not required for
+		# Onion Services to verify integrity nor authenticity of the connection and the common
+		# practice is to use the HTTP scheme.
+		# cf. <https://github.com/mastodon/mastodon/pull/15560>
+		*.onion | *.onion:*)
+			local scheme='http'
+			;;
+		*)
+			local scheme='https'
+			;;
 		esac
 		set -- "$@" "$scheme://$host/.well-known/webfinger?resource=$arg"
 	done
 
-	$CURL -qfLSs"${VERBOSE:+v}" \
+	$CURL -qfLs"${VERBOSE:+v}"Z \
 		--header 'Accept: application/jrd+json' \
 		--compressed \
 		--max-redirs 20 \
@@ -170,7 +167,8 @@ resolve() {
 
 	if [ -z "$RECURSIVE" ]; then
 		if [ -z "$SUBJECT" ]; then
-			# No need to process the returned JRDs with `jq`
+			# We can process the arguments in a single curl call to save the command invocation
+			# cost, as we don't need to process the returned JRDs with `jq`.
 			query "$@"
 			return $?
 		fi
@@ -187,17 +185,23 @@ resolve() {
 		local attempts=$((MAX_REDIRS + 1))
 		while [ "$attempts" -gt 0 ]; do
 			local jrd subject
-			jrd="$(query "$resource")" || { status=$?; continue 2; }
-			subject="$($JQ -nr --argjson jrd "$jrd" '
-if $jrd | type != "object" then
-	error("invalid type: " + ($jrd | type))
-elif $jrd.subject | type == "string" then
-	$jrd.subject
-elif $jrd.subject == null then
+			jrd="$(query "$resource")" || {
+				status=$?
+				continue 2
+			}
+			subject="$($JQ --null-input --argjson jrd "$jrd" --raw-output '
+$jrd | if type != "object" then
+	error("invalid type: " + type)
+elif .subject | type == "string" then
+	.subject
+elif .subject == null then
 	empty
 else
-	error("subject: invalid type: " + ($jrd.subject | type))
-end')" || { status=$?; continue 2; }
+	.subject | error("subject: invalid type: " + .type)
+end')" || {
+				status=$?
+				continue 2
+			}
 			if [ -z "$subject" ] || [ "$subject" = "$resource" ]; then
 				# $resource is the canonical subject
 				if [ -n "$SUBJECT" ]; then
@@ -212,7 +216,7 @@ end')" || { status=$?; continue 2; }
 		done
 
 		if [ -n "$RECURSIVE" ]; then
-			msg 'Number of JRD redirects hit maximum amount'
+			msg "Number of JRD redirects hit maximum amount of $MAX_REDIRS"
 			status=1
 		fi
 	done
@@ -220,112 +224,103 @@ end')" || { status=$?; continue 2; }
 	return $status
 }
 
-validate_args() {
-	local has_resources
+parse_args() {
+	local dry_run has_resources status
+
+	if [ "$1" = '--dry-run' ]; then
+		dry_run=1
+	fi
+	shift
 
 	while [ $# -gt 0 ]; do
 		case "$1" in
-			--help)
-				usage
-				exit
-				;;
-			--max-redirs|--max-redirs=*)
-				optarg "$@" || return $?
-				shift "$(optshift "$1")"
-				;;
-			--recursive|--subject)
-				if [ -z "$JQ" ]; then
-					msg "$1 requires jq"
-					return 1
-				fi
-				shift
-				;;
-			--no-recursive|--no-subject|--verbose|--no-verbose)
-				shift
-				;;
-			--)
-				if [ $# -eq 1 ] && [ -z "$has_resources" ]; then
-					usage
-					return 1
-				fi
-				return
-				;;
-			--*)
-				msg "unrecognized option '$1'"
-				usage
-				return 1
-				;;
-			-*)
-				local opt
-				while getopts ':rsv' opt "$1"; do
-					if [ "$opt" = '?' ]; then
-						msg "invalid option -- $opt"
-						usage
-						return 1
-					fi
-				done
-				shift
-				;;
-			*)
+		--help)
+			usage
+			exit
+			;;
+		--max-redirs | --max-redirs=*)
+			optarg "$@"
+			shift "$(optshift "$1")"
+			;;
+		--recursive | --subject)
+			if [ -z "$JQ" ]; then
+				msg "'$1' option requires jq"
+				exit 1
+			fi
+			optflag "$@"
+			shift
+			;;
+		--no-recursive | --no-subject | --verbose | --no-verbose)
+			optflag "$@"
+			shift
+			;;
+		--)
+			shift
+			if [ $# -gt 0 ]; then
 				has_resources=1
-				shift
-				;;
+				if [ -z "$dry_run" ]; then
+					resolve "$@" || status=$?
+				fi
+				set --
+			fi
+			;;
+		--*)
+			msg "unrecognized option '$1'"
+			usage >&2
+			exit 1
+			;;
+		-*)
+			local opt
+			while getopts ':rsv' opt "$1"; do
+				case "$opt" in
+				r)
+					RECURSIVE=1
+					;;
+				s)
+					SUBJECT=1
+					;;
+				v)
+					VERBOSE=1
+					;;
+				*)
+					msg "invalid option -- '$opt'"
+					usage >&2
+					exit 1
+					;;
+				esac
+			done
+			shift
+			;;
+		*)
+			has_resources=1
+			if [ -z "$dry_run" ]; then
+				xposargs resolve "$@" || status=$?
+			fi
+			shift "$(nposargs "$@")"
+			;;
 		esac
 	done
 
 	if [ -z "$has_resources" ]; then
-		usage
-		return 1
+		usage >&2
+		exit 1
 	fi
+
+	return $status
 }
 
 main() {
-	validate_args "$@" || return $?
+	# Our command-line options parser is stateful and exercises side effects just as it parses the
+	# arguments. But we want to detect error and exit before making any observable side effects, so
+	# we first run the parser in a dry-run mode to validate the arguments and run it again in a
+	# side-effectful mode after the validation passes.
+	parse_args --dry-run "$@"
 
 	MAX_REDIRS=1
-	unset SUBJECT VERBOSE
-
-	local status
-	while [ $# -gt 0 ]; do
-		case "$1" in
-			--max-redirs*)
-				optarg "$@" || return $?
-				shift "$(optshift "$1")"
-				;;
-			--)
-				shift
-				resolve "$@" || status=$?
-				break
-				;;
-			--*)
-				optflag "$1"
-				shift
-				;;
-			-*)
-				local opt
-				while getopts 'rsv' opt "$1"; do
-					case "$opt" in
-						r)
-							RECURSIVE=1
-							;;
-						s)
-							SUBJECT=1
-							;;
-						v)
-							VERBOSE=1
-							;;
-					esac
-				done
-				shift $((OPTIND - 1))
-				;;
-			*)
-				xposargs resolve "$@" || status=$?
-				shift "$(nposargs "$@")"
-				;;
-		esac
-	done
-
-	return $status
+	RECURSIVE=
+	SUBJECT=
+	VERBOSE=
+	parse_args '' "$@"
 }
 
 main "$@"
