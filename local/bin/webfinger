@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# shellcheck disable=SC3043 # TODO: Remove `local`s
+
 PROG="$0"
 
 if [ -z "$CURL" ] && type curl >/dev/null; then

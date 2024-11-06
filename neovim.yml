@@ -1,0 +1,72 @@
+base: lua51
+
+globals:
+  vim.api.nvim_buf_set_keymap:
+    args:
+    - type: number
+    - type: string
+    - type: string
+    - type: string
+    - required: false
+      type: table
+  vim.api.nvim_get_runtime_file:
+    args:
+    - type: string
+    - type: bool
+  vim.api.nvim_set_keymap:
+    args:
+    - type: string
+    - type: string
+    - type: string
+    - required: false
+      type: table
+  vim.call:
+    args:
+    - type: string
+    - required: false
+      type: '...'
+  vim.cmd:
+    args:
+    - type: string
+  vim.env.*:
+    property: override-fields
+  vim.fn.*:
+    args:
+    - required: false
+      type: '...'
+  vim.gsplit:
+    args:
+    - type: string
+    - type: string
+    - type: bool
+  vim.lsp.protocol.make_client_capabilities:
+    args: []
+  vim.opt.*:
+    property: override-fields
+    struct: Option
+  vim.split:
+    args:
+    - type: string
+    - type: string
+    - required: false
+      type: table
+  vim.tbl_contains:
+    args:
+    - type: any
+    - type: table
+  vim.tbl_filter:
+    args:
+    - type: function
+    - type: table
+  vim.tbl_map:
+    args:
+    - type: function
+    - type: table
+structs:
+  Option:
+    append:
+      method: true
+      args:
+      # TODO: `type: bool | number | string | table`
+      # cf. <https://github.com/Kampfkarren/selene/issues/140>
+      - type: any

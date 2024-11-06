@@ -7,18 +7,14 @@ jobs:
     name: ShellCheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: lumaxis/shellcheck-problem-matchers@v1
         with:
           format: gcc
       - name: Run ShellCheck
         run: |
           set -o pipefail
-          find . -name '*.sh' -exec \
-            xargs shellcheck --format gcc --shell=bash \
-            config/zsh/{.zprofile,.zshrc} \
-            zshenv \
-            {} + |
+          make check-shell |
           # Replace the severity so that the problem matcher can understand it.
           # <https://github.com/actions/toolkit/blob/f90a2dc/docs/problem-matchers.md#single-line-matchers>
           sed -E 's/^(.+):([0-9]+): (note|style): (.+)$/\1:\2: \3: \4\n\1:\2: warning: \4/g'
@@ -26,17 +22,17 @@ jobs:
     name: Format Lua scripts with StyLua
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: JohnnyMorganz/stylua-action@1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --check .
-          version: '^0.12'
+          version: '^0.20'
   selene:
     name: Lint Lua scripts with selene
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: NTBBloodbath/selene-action@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -45,7 +41,7 @@ jobs:
     name: Lint Vim scripts with Vint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: pip install vim-vint
       - run: |
           # Exclude files that use newer syntaxes which Vint does not recognize.
