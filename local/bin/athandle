@@ -6,32 +6,36 @@ dig2at() {
 		set -- "$@" "_atproto.$q"
 	done
 	dig +noall +answer TXT "$@" | sed -E 's/^_atproto\.([^[:space:]]*)\.[[:space:]][^[:space:]]*[[:space:]]IN[[:space:]]TXT[[:space:]]"did=([^"]*)".*$/\1\t\2/'
+	# The status code here is not relevant since the final status code will be determined after
+	# falling back on the well-known URI.
 }
 
 wellknown() {
 	printf '%s\t' "$1"
-	# shellcheck disable=SC2005 # The `echo` ensures that the output ends with a line feed
-	echo "$(curl -qfLs --compressed "https://$1/.well-known/atproto-did")"
+	ret=0
+	# The extra `echo` ensures that the output ends with a line feed
+	result="$(curl -qfLs --compressed "https://$1/.well-known/atproto-did")" || ret=$?
+	echo "$result"
+	return "$ret"
 }
 
 main() {
-	resolved="$(dig2at "$@")"
-	printf '%s' "$resolved" | {
-		read -r r
+	status=0
+	dig2at "$@" | {
+		read -r resolved
 		for q in "$@"; do
 			shift
-			case "$r" in
+			case "$resolved" in
 			"$q$(printf '\t')"*)
-				echo "$r"
-				read -r r
+				echo "$resolved"
+				read -r resolved
 				;;
 			*)
 				wellknown "$q" || status=$?
 				;;
 			esac
 		done
-		# shellcheck disable=SC2086 # $status can be empty and `return ""` would raise error
-		return $status
+		return "$status"
 	}
 }
 
