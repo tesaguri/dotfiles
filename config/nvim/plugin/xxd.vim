@@ -1,4 +1,4 @@
-if ExecutableSuccess('xxd --version')
+if ExecutableSuccess(['xxd', '--version'])
   " Edit the buffer as a hexadecimal byte string using xxd.
   " Adopted from |hex-editing|.
   command! -nargs=? -complete=file -bar Xxd

@@ -45,7 +45,7 @@ if dein#min#load_state(s:base_path)
   endfor
 
   " Editor utilities {{{2
-  if ExecutableSuccess('git --version')
+  if ExecutableSuccess(['git', '--version'])
     " Shows Git diffs as |signs|.
     call dein#add('airblade/vim-gitgutter')
     " Git wrapper that should be illegal.
@@ -53,7 +53,7 @@ if dein#min#load_state(s:base_path)
   endif
   " Shows diff between the swap and on-disk files in |recovery|.
   call dein#add('chrisbra/Recover.vim')
-  if ExecutableSuccess('tmux -V')
+  if ExecutableSuccess(['tmux', '-V'])
     " Key mappings for consistent navigation between Vim windows and tmux panes.
     call dein#add('christoomey/vim-tmux-navigator')
   endif
@@ -69,7 +69,7 @@ if dein#min#load_state(s:base_path)
   " You need to either define `g:lightline` before `lightline` is sourced or call `lightline#init()`
   " after defining `g:lightline`.
   call dein#add('itchyny/lightline.vim', {'hook_source': 'source ' . s:srcdir . '/lightline.vim'})
-  if ExecutableSuccess('gpg --version')
+  if ExecutableSuccess(['gpg', '--version'])
     " Transparent editing of GPG encrypted files.
     call dein#add('jamessan/vim-gnupg', {'hook_source': 'source ' . s:srcdir . '/gnupg.vim'})
   endif
@@ -144,7 +144,7 @@ if dein#min#load_state(s:base_path)
     " LSP clients {{{3
     function s:LspConfig() abort
       let l:fts = []
-      if ExecutableSuccess('rust-analyzer --version')
+      if ExecutableSuccess(['rust-analyzer', '--version'])
         let l:fts += ['rust']
         " Extra tools for `rust-analyzer` LSP client.
         call dein#add('simrat39/rust-tools.nvim', {
@@ -155,11 +155,11 @@ if dein#min#load_state(s:base_path)
               \})
       endif
       for [l:ft, l:test] in [
-        \['dhall', 'dhall-lsp-server --version'],
-        \['elm', 'elm-language-server --version'],
-        \['lua', 'lua-language-server --version'],
-        \['python', 'pyright --version'],
-        \['typescript', 'typescript-language-server --version'],
+        \['dhall', ['dhall-lsp-server', '--version']],
+        \['elm', ['elm-language-server', '--version']],
+        \['lua', ['lua-language-server', '--version']],
+        \['python', ['pyright', '--version']],
+        \['typescript', ['typescript-language-server', '--version']],
       \]
         if ExecutableSuccess(l:test)
           let l:fts += [l:ft]

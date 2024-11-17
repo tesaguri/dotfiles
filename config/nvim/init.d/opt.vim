@@ -31,7 +31,7 @@ endif
 
 " Interface {{{1
 set clipboard+=unnamedplus
-if ExecutableSuccess('rg --version')
+if ExecutableSuccess(['rg', '--version'])
   let &grepprg = 'rg --vimgrep "$@"'
   let &grepformat = '%f:%l:%c:%m'
 endif
