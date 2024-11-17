@@ -138,19 +138,40 @@ if dein#min#load_state(s:base_path)
     call dein#add('nvim-treesitter/nvim-treesitter', {
           \'hook_post_source': 'luafile ' . s:srcdir . '/nvim-treesitter.lua',
           \'lazy': 1,
-          \'on_ft': ['html', 'javascript', 'json', 'sh', 'xml'],
+          \'on_ft': ['html', 'javascript', 'json', 'sh', 'xml', 'svg', 'xslt'],
           \})
 
     " LSP clients {{{3
-    " Collection of configurations for Neovim's built-in LSP client.
-    call dein#add('neovim/nvim-lspconfig', {'lazy': 1, 'on_ft': ['dhall', 'elm', 'lua', 'python', 'rust']})
-    " Extra tools for `rust-analyzer` LSP client.
-    call dein#add('simrat39/rust-tools.nvim', {
-          \'depends': 'nvim-lspconfig',
-          \'hook_post_source': 'luafile ' . s:srcdir . '/rust-tools.lua',
-          \'lazy': 1,
-          \'on_ft': 'rust',
-          \})
+    function s:LspConfig() abort
+      let l:fts = []
+      if ExecutableSuccess('rust-analyzer --version')
+        let l:fts += ['rust']
+        " Extra tools for `rust-analyzer` LSP client.
+        call dein#add('simrat39/rust-tools.nvim', {
+              \'depends': 'nvim-lspconfig',
+              \'hook_post_source': 'luafile ' . s:srcdir . '/rust-tools.lua',
+              \'lazy': 1,
+              \'on_ft': 'rust',
+              \})
+      endif
+      for [l:ft, l:test] in [
+        \['dhall', 'dhall-lsp-server --version'],
+        \['elm', 'elm-language-server --version'],
+        \['lua', 'sumneko_lua --version'],
+        \['python', 'pyright --version'],
+        \['typescript', 'tsserver < /dev/null'],
+      \]
+        if ExecutableSuccess(l:test)
+          let l:fts += [l:ft]
+        endif
+      endfor
+      if !empty(l:fts)
+        " Collection of configurations for Neovim's built-in LSP client.
+        call dein#add('neovim/nvim-lspconfig', {'lazy': 1, 'on_ft': l:fts})
+      endif
+    endfunction
+    call s:LspConfig()
+    delfunction s:LspConfig
 
     " `nvim-cmp` completion framework and its integrations {{{3
     " The completion framework itself.
