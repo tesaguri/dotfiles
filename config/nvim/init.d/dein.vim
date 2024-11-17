@@ -157,9 +157,9 @@ if dein#min#load_state(s:base_path)
       for [l:ft, l:test] in [
         \['dhall', 'dhall-lsp-server --version'],
         \['elm', 'elm-language-server --version'],
-        \['lua', 'sumneko_lua --version'],
+        \['lua', 'lua-language-server --version'],
         \['python', 'pyright --version'],
-        \['typescript', 'tsserver < /dev/null'],
+        \['typescript', 'typescript-language-server --version'],
       \]
         if ExecutableSuccess(l:test)
           let l:fts += [l:ft]
