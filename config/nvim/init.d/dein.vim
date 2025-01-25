@@ -144,21 +144,12 @@ if dein#min#load_state(s:base_path)
     " LSP clients {{{3
     function s:LspConfig() abort
       let l:fts = []
-      if ExecutableSuccess(['rust-analyzer', '--version'])
-        let l:fts += ['rust']
-        " Extra tools for `rust-analyzer` LSP client.
-        call dein#add('simrat39/rust-tools.nvim', {
-              \'depends': 'nvim-lspconfig',
-              \'hook_post_source': 'luafile ' . s:srcdir . '/rust-tools.lua',
-              \'lazy': 1,
-              \'on_ft': 'rust',
-              \})
-      endif
       for [l:ft, l:test] in [
         \['dhall', ['dhall-lsp-server', '--version']],
         \['elm', ['elm-language-server', '--version']],
         \['lua', ['lua-language-server', '--version']],
         \['python', ['pyright', '--version']],
+        \['rust', ['rust-analyzer', '--version']],
         \['typescript', ['typescript-language-server', '--version']],
       \]
         if ExecutableSuccess(l:test)
