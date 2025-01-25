@@ -93,11 +93,9 @@ if vim.call("dein#is_available", "nvim-lspconfig") ~= 0 then
               },
             },
             diagnostics = {
-              warningsAsHelp = {
+              warningsAsInfo = {
                 "clippy::pedantic",
                 "clippy::pattern_type_mismatch",
-              },
-              warningsAsInfo = {
                 -- I am not a big fan of this lint.
                 "clippy::type_complexity",
               },
