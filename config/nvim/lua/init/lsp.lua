@@ -36,7 +36,7 @@ if vim.call("dein#is_available", "nvim-lspconfig") ~= 0 then
       buf_map("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
       buf_map("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
       buf_map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-      buf_map("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+      buf_map("n", "<space>f", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
     end
 
     local lua_path = vim.split(package.path, ";")
