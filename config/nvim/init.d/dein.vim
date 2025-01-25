@@ -141,6 +141,11 @@ if dein#min#load_state(s:base_path)
           \'on_ft': ['html', 'javascript', 'json', 'sh', 'xml', 'svg', 'xslt'],
           \})
 
+    " Display LSP inlay hints at the end of the line, rather than within the line.
+    call dein#add('chrisgrieser/nvim-lsp-endhints', {
+          \'hook_post_source': 'luafile ' . s:srcdir . '/nvim-lsp-endhints.lua',
+          \})
+
     " LSP clients {{{3
     function s:LspConfig() abort
       let l:fts = []
