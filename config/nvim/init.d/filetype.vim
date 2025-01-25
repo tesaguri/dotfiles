@@ -2,22 +2,12 @@
 autocmd vimrc FileType markdown setlocal foldlevel=1
 
 " Shell {{{1
-if executable('umask')
-  let s:umask = invert(str2nr(system('umask'), 8))
-  let s:execmode = ''
-  while len(s:execmode) < 9
-    let s:execmode .= and(s:umask, 0400) ? '.' : '-'
-    let s:umask *= s:umask
-  endwhile
-  unlet s:umask
-else
-  let s:execmode = 'rwxr-xr-x'
-endif
 " Use the literal tab character, and set the execute mode bit when writing to a new file.
 autocmd vimrc FileType sh
   \ setlocal noexpandtab shiftwidth=0
   \ | if empty(glob(expand('%')))
-    \ | execute 'autocmd vimrc BufWritePost <buffer> ++once call setfperm(expand(''%''), ''' . s:execmode . ''')'
+    \ | execute 'autocmd' 'vimrc' 'BufWritePost' '<buffer>' '++once'
+      \ 'call' ('setfperm(expand(''%''), ''' . init#filetype#sh#umask_symbols() . ''')')
   \ | endif
 
 " Ruby {{{1
