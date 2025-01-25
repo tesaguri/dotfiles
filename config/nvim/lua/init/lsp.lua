@@ -23,7 +23,8 @@ if vim.call("dein#is_available", "nvim-lspconfig") ~= 0 then
       buf_map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
       buf_map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
       buf_map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-      buf_map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+      -- TODO: Come up with a good mapping which doesn't confilict with tmux-navigator's one.
+      -- buf_map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
       buf_map("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
       buf_map("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
       buf_map(
